@@ -11,7 +11,7 @@ const DuctInput = () => {
         enter:1,                // 압력       (TextBoxc2)
         speed:10,               // 속도       (TextBoxc3)
         ducts : "",             // 덕트종류     (CBc3)
-        windVolume : 0,         // 풍량       (TextBoxc4)
+        windVolume : "",         // 풍량       (TextBoxc4)
         enterChecked:true,      // 체크박스 항시 체크  (CBc1)
         speedChecked:true,      // 체크박스 항시 체크  (CBc2)
         enterDisable:false,     // 체크박스 해제 하면 input 비활성화
@@ -128,8 +128,7 @@ const DuctInput = () => {
         al7 = 0;
 
 
-        let windvolumeValue = state.windVolume;
-        let speedValue = state.speed;
+
 
         e = state.materialRoughness;
         t = state.minSize;
@@ -151,7 +150,7 @@ const DuctInput = () => {
         q = state.windVolume;
 
         if (state.enterChecked === true) {
-            GoalSeekAI(2400, u7, ai7, 0.16);
+            GoalSeekAI(q, u7, ai7, 0.16);
             d1 = ai7;
             if (d1 <= 0) {
                 FirstAndSecondSet(state);
@@ -162,7 +161,7 @@ const DuctInput = () => {
         if (re2 >= 4000) {
             f = 0.0055 * (1 + (20000 * e / d1 + 10 ^ 6 / re2) ^ (1 / 3));
         } else {
-            GoalSeekAG(2400, u7, 383.951907857738);
+            GoalSeekAG(q, u7, 383.951907857738);
             d1 = ai7;
 
             if (d1 <= 0) {
@@ -177,13 +176,13 @@ const DuctInput = () => {
 
         if (state.ducts === "사각덕트") {
             ak7 = w7;
-            GoalSeekAJ(2400, u7, ak7, al7, ai7);
+            GoalSeekAJ(q, u7, ak7, al7, ai7);
             w = Math.round(al7);
             v = (q / 3600) / (ak7 / 1000 * w / 1000);
         } else if (state.ducts === "오발덕트") {
             let ao7 = w7;
             h = w7;
-            GoalSeekAM(2400, u7, an7, ao7, ai7);
+            GoalSeekAM(q, u7, an7, ao7, ai7);
             w = Math.round(an7);
             if (w < h) {
                 w = h;
