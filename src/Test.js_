@@ -1,0 +1,74 @@
+import {useState, useCallback} from "react";
+
+const Test = () => {
+    const [list, setList] = useState([]);
+    const [search, setSearch] = useState({
+        a: "",
+        b: "",
+    });
+
+    const GoalSeekAI = (r6, u7, ai7, x6) => {
+        if (r6 === undefined || r6 === null || u7 === undefined || u7 === null) return "";
+
+        // part1 및 part2 변수는 중간 계산 값입니다.
+        var part1 = (ai7 / 1000) ** 5 * (PI / (4 * r6 / 3600)) ** 2 * 2 / 1.2;
+        var part2 = 0.0055 * (1 + (20000 * x6 / ai7 + 1.5 * PI * ai7 / 1000 * 10 / (4 * r6 / 3600)) ** (1 / 3));
+
+        var result = u7 * part1 - part2;  // 최종 계산 결과
+        return result;
+    };
+
+    const add = (a, b) => {
+        let result = parseInt(a) + parseInt(b);
+        return isNaN(result) ? "" : result;
+    };
+
+    const handleChange = useCallback((e) => {
+        const updatedSearch = {...search, [e.target.name]: e.target.value};
+        setSearch(updatedSearch);
+        const result = add(updatedSearch.a, updatedSearch.b);
+
+        if(result !== "") {
+            setList(prevList => {
+                // If the list already has 8 items, reset the list
+                if (prevList.length === 8) {
+                    return [{
+                        a: updatedSearch.a,
+                        b: updatedSearch.b,
+                        result: result
+                    }];
+                }
+
+                // Otherwise, add new item to the list
+                return [...prevList, {
+                    a: updatedSearch.a,
+                    b: updatedSearch.b,
+                    result: result
+                }];
+            });
+        }
+    }, [search]);
+
+    return (
+        <div>
+
+
+            <input value={search.a} name={'a'} onChange={handleChange}/>
+            <input value={search.b} name={'b'} onChange={handleChange}/>
+            <div style={{border: "solid 1px black"}}> a : {search.a}</div>
+            <div style={{border: "solid 1px red"}}> b : {search.b}</div>
+            <div>
+                <div>결과 값 {add(search.a, search.b)}</div>
+                <div>
+                    {list.map((item, index) => (
+                        <div key={index}>
+                            <div>a: {item.a}, b: {item.b}, 결과값: {item.result}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Test;

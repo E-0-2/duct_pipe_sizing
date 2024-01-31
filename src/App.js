@@ -1,25 +1,48 @@
-import logo from './logo.svg';
+
 import './App.css';
+import React, {useEffect, useState} from "react";
+import DuctInput from "./DuctInput";
+import PipeMain from "./PipeMain";
+import Default from "./Default";
+import DuctResultView from "./DuctResultView";
+
 
 function App() {
+
+  const [page, setPage] = useState('default');
+
+
+
+
+
+
+  const handleDuctClick = () => {
+    page === 'duct' ? setPage('default') : setPage('duct');
+  };
+
+  const handlePipeClick = () => {
+    page === 'pipe' ? setPage('default') : setPage('pipe')
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="AppStyle">
+        <div className={"appButtons"}>
+          <button className={"appButton"} onClick={handleDuctClick}>DUCT</button>
+          <button className={"appButton"} onClick={handlePipeClick}>PIPE</button>
+        </div>
+        <div>
+          {page === 'duct' &&
+              <div>
+                <DuctInput/>
+              </div>}
+          {page === 'pipe' &&
+              <div>
+                <PipeMain/>
+              </div>}
+          {page === 'default' && <Default/>}
+
+        </div>
+      </div>
   );
 }
-
 export default App;
