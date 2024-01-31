@@ -20,6 +20,7 @@ const Test = ()=>{
 
     return <div>
         <input type='text' value={search} onChange={handleChange}/>
+        <div>{search}</div>
     </div>
 }
 
