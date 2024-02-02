@@ -16,92 +16,63 @@ const DuctInput = () => {
         speedChecked:true,      // 체크박스 항시 체크  (CBc2)
         enterDisable:false,     // 체크박스 해제 하면 input 비활성화
         speedDisable:false,     // 체크박스 해제 하면 input 비활성화
-        firstH : 500,            // 첫번째 H(mm)        (TextBoxc5)
-        firstW :' ',            // 첫번째 W(mm)        (Labelc6)
-        firstD : '',            // 첫번째  D(mm)     (Labelc7)
-        firstP : '',            // 첫번째  P(pa/m)     (Labelc7)
-        firstV : '',            // 첫번째  V(m/s)      (Labelc8)
-        firstF :'' ,            // 첫번째  f           (Labelc9)
-        secondH :'' ,           // 두번째 H(mm)        (TextBoxc10)
-        secondW  : '',          // 두번째 W(mm)       (TextBoxc11)
-        secondD : '',           // 두번째  D(mm)     (Labelc10)
-        secondP : '',           // 두번째  P(pa/m)     (Labelc12)
-        secondV :'' ,           // 두번째  V(m/s)      (Labelc13)
-        secondF : '',           // 두번째  f           (Labelc14)
+        firstH : "",            // 첫번째 H(mm)        (TextBoxc5)
+        firstW : "",            // 첫번째 W(mm)        (Labelc6)
+        firstD : "",            // 첫번째  D(mm)     (Labelc7)
+        firstP : "",            // 첫번째  P(pa/m)     (Labelc7)
+        firstV : "",            // 첫번째  V(m/s)      (Labelc8)
+        firstF : "",           // 첫번째  f           (Labelc9)
+        secondH : "",           // 두번째 H(mm)        (TextBoxc10)
+        secondW : "",          // 두번째 W(mm)       (TextBoxc11)
+        secondD : "",           // 두번째  D(mm)     (Labelc10)
+        secondP : "",           // 두번째  P(pa/m)     (Labelc12)
+        secondV : "",           // 두번째  V(m/s)      (Labelc13)
+        secondF : "",           // 두번째  f           (Labelc14)
         onSwitch:false,           // (g1 on/off)
     });
 
-    const PI = Math.PI
 
 // GoalSeekAI 함수는 주어진 매개 변수 값을 이용해 계산 결과를 디스플레이합니다.
     const GoalSeekAI = (r6, u7, ai7, x6) => {
-        if (r6 === undefined || r6 === null || u7 === undefined || u7 === null) return "";
-
-        // part1 계산
-        let part1 = (ai7 / 1000) ** 5 * (PI / (4 * r6 / 3600)) ** 2 * 2 / 1.2;
-
-        // 수정된 part2 계산
-        let part2 = 0.0055 * (1 + (20000 * x6 / ai7 + 1.5 * PI * ai7 / 1000 * 10 / (4 * r6 / 3600)) ** (1 / 3));
-
-        // 최종 계산 결과
-        let result = u7 * part1 - part2;
-
-        // ai7 값을 업데이트
-        ai7 = ai7 - result / (part1 - 0.0055 * (1 / 3) * part2);
-
-        return ai7;
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return u7 * Math.pow((ai7 / 1000), 5) * Math.pow((Math.PI / (4 * r6 / 3600)), 2) * 2 / 1.2 - 0.0055 *
+                Math.pow(1 + ((20000 * x6 / ai7 + 1.5 * Math.PI * ai7 / 1000 * 10 / (4 * r6 / 3600))), (1/3));
+        }
     };
 
     const GoalSeekAG = (r6, u7, ai7) => {
-        if (r6 === undefined || r6 === null || r6 === "" || u7 === undefined || u7 === null || u7 === "") return "";
-
-        // 목표치에 수렴할 때까지 반복
-        while (true) {
-            let part1 = (ai7 / 1000) ** 5 * (PI / (4 * r6 / 3600)) ** 2 * 2 / 1.2;
-            let part2 = 64 * PI * ai7 / 1000 / (4 * r6 / 3600) * 1.5 * 10 ** -5;
-
-            let result = u7 * part1 - part2;
-
-            // 수렴 기준을 설정하고 그에 따라 반복을 종료
-            if (Math.abs(result) < 0.0001) {
-                break;
-            }
-
-            // ai7 값을 업데이트
-            ai7 = ai7 - result / (part1 - 1.5 * 10 ** -5 * 64 * PI / 1000 / (4 * r6 / 3600));
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return u7 * Math.pow((ai7 / 1000), 5) * Math.pow((Math.PI / (4 * r6 / 3600)), 2) * 2 / 1.2 - 64 * Math.PI * ai7 / 1000 / (4 * r6 / 3600) * 1.5 * Math.pow(10, -5);
         }
-
-        return ai7;
     };
 
 
 // GoalSeekAJ 함수는 주어진 매개 변수 값을 이용해 계산 결과를 디스플레이합니다.
     const GoalSeekAJ = (r6, u7, ak7, al7, ai7) => {
-        if (r6 === undefined || r6 === null || r6 === "" || u7 === undefined || u7 === null || u7 === "" || ai7 === undefined || ai7 === null || ai7 === "") {
-            // 유효성 검사 실패 시 처리
-            console.error("Invalid arguments for GoalSeekAJ function");
-            return; // 에러가 발생하면 함수 종료
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return 1.3 * Math.pow((ak7 * al7), 5) / Math.pow((ak7 + al7), 2) ** (1/8) / ai7;
         }
-
-        return 1.3 * ((ak7 * al7) ** 5 / (ak7 + al7) ** 2) ** (1 / 8) / ai7;
     };
 
 
 // GoalSeekAM 함수는 너비와 높이를 비교한 후 나머지 변수를 이용해 계산 결과를 화면에 출력합니다.
     const GoalSeekAM = (r6, u7, an7, ao7, ai7) => {
-        if (r6 === "" || u7 === "") return "";
-
-        let result;
-        if (an7 > ao7) {
-            result = 1.55 * ((PI / 4 * Math.pow(ao7, 2) + ao7 * (an7 - ao7)) ** 0.625 / (PI * ao7 + 2 * (an7 - ao7)) ** 0.25 / ai7);
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else if (an7 > ao7) {
+            return 1.55 * Math.pow((Math.PI / 4 * Math.pow(ao7, 2) + ao7 * (an7 - ao7)), 0.625) / Math.pow((Math.PI * ao7 + 2 * (an7 - ao7)), 0.25) / ai7;
         } else {
-            result = 1.55 * ((PI / 4 * Math.pow(an7, 2) + an7 * (ao7 - an7)) ** 0.625 / (PI * an7 + 2 * (ao7 - an7)) ** 0.25 / ai7);
+            return 1.55 * Math.pow((Math.PI / 4 * Math.pow(an7, 2) + an7 * (ao7 - an7)), 0.625) / Math.pow((Math.PI * an7 + 2 * (ao7 - an7)), 0.25) / ai7;
         }
-
-        return result;
     }
 
-    const FirstAndSecondSet = () => {
+    const err1 = () => {
         setState({
             ...state,
             firstW: "",
@@ -240,13 +211,14 @@ const DuctInput = () => {
             return setState({...state, [e.target.name]: e.target.value});
         }
 
-       const newStateAfterCal03 = () => duct_cal03(state,setState);
+        const newStateAfterCal03 = () => duct_cal03(state);
 
         // duct_cal03 함수에서 반환된 newStateAfterCal03를 이용하여 duct_cal04 함수 호출
         duct_cal04(newStateAfterCal03);
 
         setState({...state, onSwitch: false, [e.target.name]: e.target.value})
 
+        // 체크 박스 누르면 input 사용 불가 다시 한번더 누르면 사용 가능.
         // 체크 박스 누르면 input 사용 불가 다시 한번더 누르면 사용 가능.
     }, [state]);
 
@@ -271,10 +243,10 @@ const DuctInput = () => {
         }
     }
 
-    const duct_cal03 = (state, setState) => {
+    const duct_cal03 = (state) => {
 
         const x6 = 0.16;
-        let a1, b, d, d0, d1, d2, e, f, k, p, p1, v, v1, h, w, q, re, r, r1, t, t1, icont, cwd;
+        let a1, b, d, d0, d1, d2, e, f, k, p, p1, v, v1, h, w, q, re, r, r1, t, t1, icont, cwd,r6,re2;
         let u7, v7, w7, ai7, ak7, al7;
         const WS = {};
         const duct = {};
@@ -283,7 +255,7 @@ const DuctInput = () => {
             || (state.enterChecked && parseInt(state.enter) === 0) || (state.speedChecked && parseInt(state.speed) === 0)
             || (state.ducts !== "원형덕트" && parseInt(state.firstH) === 0)
         ) {
-            FirstAndSecondSet();
+            err1();
         }
         r1 = 7;
         r = 0;
@@ -317,26 +289,34 @@ const DuctInput = () => {
 
         q = state.windVolume;
 
+        r6 = state.windVolume;
+
         if (state.enterChecked === true) {
-            GoalSeekAI(q, u7, ai7, x6);
+
+            GoalSeekAI(r6, u7, ai7, x6);
+
+
+
             d1 = ai7;
-            if (d1 <= 0) {
-                return FirstAndSecondSet();
+            if (d1<= 0) {
+                return err1();
             }
         }
 // GoalSeekAI 이후 d1 값을 업데이트
         // GoalSeekAI 이후 d1 값을 업데이트
         v = 4 * (q / 3600) / (3.141592 * (d1 / 1000) ** 2);
-        let re2 = v * d1 * 100 / 1.5;
+         re2 = v * d1 * 100 / 1.5;
 
         if (re2 >= 4000) {
             f = 0.0055 * (1 + (20000 * e / d1 + 10 ** 6 / re2) ** (1 / 3));
         } else {
-            GoalSeekAG(q, u7, ai7);
+
+            GoalSeekAG(r6, u7, ai7);
+
             // GoalSeekAG 이후 d1 값을 업데이트
             d1 = ai7;
             if (d1 <= 0) {
-                return FirstAndSecondSet();
+                return err1();
             }
             v = 4 * (q / 3600) / (3.141592 * Math.pow((d1 / 1000), 2));
             let re2 = v * d1 * 100 / 1.5;
@@ -346,13 +326,19 @@ const DuctInput = () => {
 
         if (state.ducts === "사각덕트") {
             ak7 = w7;
-            GoalSeekAJ(q, u7, ak7, al7, ai7);
+
+            GoalSeekAJ(r6, u7, ak7, al7, ai7)
+
+
             w = Math.round(al7);
             v = (q / 3600) / (ak7 / 1000 * w / 1000);
         } else if (state.ducts === "오발덕트") {
             let ao7 = w7;
             h = w7;
-            GoalSeekAM(q, u7, an7, ao7, ai7);
+
+            GoalSeekAM(r6, u7, an7, ao7, ai7)
+
+
             w = Math.round(an7);
             if (w < h) {
                 w = h;
@@ -370,61 +356,69 @@ const DuctInput = () => {
 
         // Duct _ 재계
 
-            const rcl1 = (state , n) => {
-                let result;
-                if (n >= 7) {
-                    return ;
-                }
-
+        const rcl1 = (state) => {
+            let t1 = 0; // You must initialize t1
+            let maxIterations = 1000;
+            let iteration = 0; // Counter variable for the loop
+            while(iteration < maxIterations) {
                 if (state.ducts === "원형덕트") {
                     d = Math.ceil(d0 / t) * t + t1;
-                    v1 = 4 * (q / 3600) / (3.141592 * (d / 1000) ** 2);
+                    v1 = 4 * (q / 3600) / (Math.PI * Math.pow((d / 1000), 2));
                 } else if (state.ducts === "사각덕트") {
-                    b = w7;
+                    b = parseInt(w7);
+
                     if (d1 > d2) {
                         a1 = Math.ceil(w / t) * t + t1;
                     } else {
-                        v1 = v7;
-                        a1 = Math.ceil(((q / 3600) / ((b / 1000) * v1) * 1000 / t)) * t;
+                        a1 = Math.ceil((q / 3600) / ((b / 1000) * v7) * 1000 / t) * t;
                     }
-                    v1 = (q / 3600) / (a1 / 1000 * b / 1000);
-                    d = 1.3 * ((a1 * b) ** 5 / (a1 + b) ** 2) ** 0.125;
-                } else if (state.ducts === "오발덕트") {
-                    b = w7;
+
+                    v1 = (q / 3600) / ((a1 / 1000) * (b / 1000));
+                    d = 1.3 * Math.pow( Math.pow((a1 * b), 5) / Math.pow((a1 + b), 2), 0.125);
+                } else if(state.ducts === "오발덕트") {
+                    b = parseInt(w7);
                     if (d1 > d2) {
                         a1 = Math.ceil(w / t) * t + t1;
                         if (a1 < b) {
                             a1 = b;
                         }
                     } else {
-                        v1 = v7;
-                        a1 = Math.ceil(((((q / 3600) / v1 - (b / 1000) ** 2 / PI) / (b / 1000) + (b / 1000)) * 1000 / t)) * t;
+                        a1 = Math.ceil((((q / 3600) / v7 - Math.pow((b / 1000), 2) / Math.PI) / (b / 1000) + (b / 1000)) * 1000 / t) * t;
                         if (a1 < b) {
                             a1 = b;
                         }
                     }
-                    v1 = (q / 3600) / ((3.141592 * (b / 1000) ** 2 / 4) + b / 1000 * (a1 / 1000 - b / 1000));
-                    d = 1.55 * (3.141592 * b ** 2 / 4 + b * (a1 - b)) ** 0.625 / (3.141592 * b + 2 * (a1 - b)) ** 0.25;
-                }
-                if (d === 0) {
-                    FirstAndSecondSet();
-                }
+                    v1 = (q / 3600) / ((Math.PI * Math.pow((b / 1000), 2) / 4) + (b / 1000) * (a1 / 1000 - b / 1000));
+                    if(a1 >= b) {
+                        d = calculateD(a1, b);
+                    }
 
-
+                }
                 if (state.enterChecked === true && state.speedChecked === true) {
-                    if (v1 > v7) {
-                        return result;
+                    if (v1 > parseInt(v7)) {
+                        t1 = t1 + t;
+                        iteration++;
+                        continue;
                     }
                 }
+                iteration++;
+                if (d === 0) {
+                    err1();
+                    break;
+                }
 
-                v = 4 * (q / 3600) / (3.141592 * (d / 1000) ** 2);
+
+
+                v = 4 * (q / 3600) / (Math.PI * Math.pow((d / 1000), 2));
                 re2 = v * d * 100 / 1.5;
+
                 if (re2 >= 4000) {
-                    f = 0.0055 * (1 + Math.pow((20000 * e / d + Math.pow(10, 6) / re2), 1 / 3));
+                    f = 0.0055 * (1 + Math.pow((20000 * e / d + Math.pow(10, 6) / re2), (1 / 3)));
                 } else {
                     f = 64 / re2;
                 }
                 p1 = f / (2 * d / 1000) * 1.2 * Math.pow(v, 2);
+
 
                 if (state.ducts === "원형덕트") {
                     console.log("원형덕트", d);
@@ -433,7 +427,7 @@ const DuctInput = () => {
                     console.log("사각오발", a1);
                     state.firstW = a1;
                 }
-                 result = rcl1(state, n+1);
+
 
                 console.log("Calculated values: ", {d, a1, v1, p1, f});
 
@@ -460,95 +454,99 @@ const DuctInput = () => {
                 });
 
 
-                return result;
+                return rcl1(state);
 
 
 
+            }
+            rcl1(state);
     }
-        rcl1(state, 0);
+    }
+    function calculateD(a1, b) {
+        return 1.55 * Math.pow((Math.PI * Math.pow(b, 2) / 4 + b * (a1 - b)), 0.625) / Math.pow((Math.PI * b + 2 * (a1 - b)), 0.25);
+    }
 
-    };
-
-    const duct_cal04 = (state) => {
-        // 필수 입력 값이 없거나 0인 경우 초기화하고 리턴
-        if (
-            (state.enterChecked === false && state.speedChecked === false) ||
-            state.materialRoughness === "" ||
-            state.windVolume === "" ||
-            state.secondW === "" ||
-            state.minSize === "" ||
-            (state.enterChecked === true && parseFloat(state.enter) === 0) ||
-            (state.speedChecked === true && parseFloat(state.speed) === 0) ||
-            (state.ducts !== "원형덕트" && parseFloat(state.secondH) === 0)
-        ) {
-            setState({
-                ...state,
-                secondP: "",
-                secondV: "",
-                secondF: "",
-            });
-            return;
-        }
-
-        let a1, b, d, e, f, v, v1, q, p1;
-
-        e = parseFloat(state.materialRoughness);
-        q = parseFloat(state.windVolume);
-
-        if (state.ducts === "원형덕트") {
-            d = parseFloat(state.secondW);
-            v1 = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
-        } else if (state.ducts === "사각덕트") {
-            b = parseFloat(state.secondW);
-            a1 = parseFloat(state.secondH);
-            v1 = (q / 3600) / (a1 / 1000 * b / 1000);
-            d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
-        } else if (state.ducts === "오발덕트") {
-            b = parseFloat(state.secondH);
-            a1 = parseFloat(state.secondW);
-            if (a1 < b) {
-                a1 = b;
+        const duct_cal04 = (state) => {
+            // 필수 입력 값이 없거나 0인 경우 초기화하고 리턴
+            state = {...state};
+            if (
+                (state.enterChecked === false && state.speedChecked === false) ||
+                state.materialRoughness === "" ||
+                state.windVolume === "" ||
+                state.secondW === "" ||
+                state.minSize === "" ||
+                (state.enterChecked === true && parseFloat(state.enter) === 0) ||
+                (state.speedChecked === true && parseFloat(state.speed) === 0) ||
+                (state.ducts !== "원형덕트" && parseFloat(state.secondH) === 0)
+            ) {
                 setState({
                     ...state,
-                    secondW: a1.toString(),
+                    secondP: "",
+                    secondV: "",
+                    secondF: "",
                 });
+                return;
             }
-            a1 = (q / 3600) / ((Math.PI * Math.pow(b / 1000, 2) / 4) + (b / 1000) * (a1 / 1000 - b / 1000));
-            d = 1.55 * Math.pow((Math.PI * Math.pow(b, 2) / 4 + b * (a1 - b)), 0.625) / Math.pow((Math.PI * b + 2 * (a1 - b)), 0.25);
+
+            let a1, b, d, e, f, v, v1, q, p1;
+
+            e = parseFloat(state.materialRoughness);
+            q = parseFloat(state.windVolume);
+
+            if (state.ducts === "원형덕트") {
+                d = parseFloat(state.secondW);
+                v1 = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
+            } else if (state.ducts === "사각덕트") {
+                b = parseFloat(state.secondW);
+                a1 = parseFloat(state.secondH);
+                v1 = (q / 3600) / (a1 / 1000 * b / 1000);
+                d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
+            } else if (state.ducts === "오발덕트") {
+                b = parseFloat(state.secondH);
+                a1 = parseFloat(state.secondW);
+                if (a1 < b) {
+                    a1 = b;
+                    setState({
+                        ...state,
+                        secondW: a1.toString(),
+                    });
+                }
+                a1 = (q / 3600) / ((Math.PI * Math.pow(b / 1000, 2) / 4) + (b / 1000) * (a1 / 1000 - b / 1000));
+                d = 1.55 * Math.pow((Math.PI * Math.pow(b, 2) / 4 + b * (a1 - b)), 0.625) / Math.pow((Math.PI * b + 2 * (a1 - b)), 0.25);
+            }
+
+            if (d === 0) {
+                err();
+                return;
+            }
+
+            v = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
+            let Re2 = v * d * 100 / 1.5;
+
+            if (Re2 >= 4000) {
+                p1 = 0.0055 * (1 + Math.pow((20000 * e / d + Math.pow(10, 6) / Re2), 1 / 3));
+            } else {
+                p1 = 64 / Re2;
+            }
+
+            // 결과값을 state에 업데이트
+            setState({
+                ...state,
+                secondP: p1,// 소수점 3자리까지
+                secondV: v1,// 소수점 2자리까지
+                secondF: f, // 소수점 5자리까지
+            });
+        };
+
+        const  err = () => {
+            setState({
+                ...state,
+                secondP : "",
+                secondV : "",
+                secondF : "",
+            });
+
         }
-
-        if (d === 0) {
-            err();
-            return;
-        }
-
-        v = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
-        let Re2 = v * d * 100 / 1.5;
-
-        if (Re2 >= 4000) {
-            p1 = 0.0055 * (1 + Math.pow((20000 * e / d + Math.pow(10, 6) / Re2), 1 / 3));
-        } else {
-            p1 = 64 / Re2;
-        }
-
-        // 결과값을 state에 업데이트
-        setState({
-            ...state,
-            secondP: p1,// 소수점 3자리까지
-            secondV: v1,// 소수점 2자리까지
-            secondF: f, // 소수점 5자리까지
-        });
-    };
-
-    const  err = () => {
-       setState({
-           ...state,
-           secondP : "",
-           secondV : "",
-           secondF : "",
-       });
-
-    }
     const duct_clst = useCallback(() => {
         // state를 직접 참조하여 사용하도록 변경
 
@@ -584,9 +582,14 @@ const DuctInput = () => {
 
 
 
+    // ECMAScript 2015(ES6) syntax
+
     const handleButtonClick = () => {
         // 입력 값을 연산하고 그 결과를 얻기 위해 calculate 함수를 호출
-        duct_cal03(state,setState);
+        const ducts = duct_cal03(state);
+
+        duct_cal04(ducts);
+
 
         // newState를 이용하여 다른 동작 수행 가능 (예: 결과 출력, 저장 등)
 
@@ -598,7 +601,6 @@ const DuctInput = () => {
     useEffect(() => {
         console.log(state);
     }, [state]); // state가 변경될 때마다 useEffect가 실행
-
     return(
         <div className={"DuctInputClass"}>
             <DuctHead/>
@@ -709,7 +711,7 @@ const DuctInput = () => {
             <div>
                 <button onClick={handleButtonClick}>Calculate</button>
             </div>
-        <DuctResultView State={state}/>
+            <DuctResultView State={state}/>
         </div>
     )
 }
