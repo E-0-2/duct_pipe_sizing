@@ -7,17 +7,6 @@ const Test = () => {
         b: "",
     });
 
-    const GoalSeekAI = (r6, u7, ai7, x6) => {
-        if (r6 === undefined || r6 === null || u7 === undefined || u7 === null) return "";
-
-        // part1 및 part2 변수는 중간 계산 값입니다.
-        let part1 = (ai7 / 1000) ** 5 * (PI / (4 * r6 / 3600)) ** 2 * 2 / 1.2;
-        let part2 = 0.0055 * (1 + (20000 * x6 / ai7 + 1.5 * PI * ai7 / 1000 * 10 / (4 * r6 / 3600)) ** (1 / 3));
-
-        let result = u7 * part1 - part2;  // 최종 계산 결과
-        return result;
-    };
-
     const add = (a, b) => {
         let result = parseInt(a) + parseInt(b);
         return isNaN(result) ? "" : result;
@@ -72,3 +61,43 @@ const Test = () => {
 };
 
 export default Test;
+
+
+  const GoalSeekAI = (r6, u7, ai7, x6) => {
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return u7 * Math.pow((ai7 / 1000), 5) * Math.pow((Math.PI / (4 * r6 / 3600)), 2) * 2 / 1.2 - 0.0055 *
+                Math.pow(1 + ((20000 * x6 / ai7 + 1.5 * Math.PI * ai7 / 1000 * 10 / (4 * r6 / 3600))), (1/3));
+        }
+    };
+
+    const GoalSeekAG = (r6, u7, ai7) => {
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return u7 * Math.pow((ai7 / 1000), 5) * Math.pow((Math.PI / (4 * r6 / 3600)), 2) * 2 / 1.2 - 64 * Math.PI * ai7 / 1000 / (4 * r6 / 3600) * 1.5 * Math.pow(10, -5);
+        }
+    };
+
+
+// GoalSeekAJ 함수는 주어진 매개 변수 값을 이용해 계산 결과를 디스플레이합니다.
+    const GoalSeekAJ = (r6, u7, ak7, al7, ai7) => {
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else {
+            return 1.3 * Math.pow((ak7 * al7), 5) / Math.pow((ak7 + al7), 2) ** (1/8) / ai7;
+        }
+    };
+
+
+// GoalSeekAM 함수는 너비와 높이를 비교한 후 나머지 변수를 이용해 계산 결과를 화면에 출력합니다.
+    const GoalSeekAM = (r6, u7, an7, ao7, ai7) => {
+        if (r6 === "" || u7 === "") {
+            return "";
+        } else if (an7 > ao7) {
+            return 1.55 * Math.pow((Math.PI / 4 * Math.pow(ao7, 2) + ao7 * (an7 - ao7)), 0.625) / Math.pow((Math.PI * ao7 + 2 * (an7 - ao7)), 0.25) / ai7;
+        } else {
+            return 1.55 * Math.pow((Math.PI / 4 * Math.pow(an7, 2) + an7 * (ao7 - an7)), 0.625) / Math.pow((Math.PI * an7 + 2 * (ao7 - an7)), 0.25) / ai7;
+        }
+    }

@@ -10,9 +10,9 @@ function calculateFunctionValue(x) {
 
     const R6 = 5000;  // 풍량
 
-    const U7 = 1.0;
+    const U7 = 1.0; // 압력
 
-    const X6 = 0.16;
+    const X6 = 0.16; // x6 = 0.16
 
 
 

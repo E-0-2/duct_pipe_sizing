@@ -1,0 +1,245 @@
+// const duct_cal03 = () => {
+//
+//
+//     //
+//     // 압력체크박스 그리고 속도체크박스 체크가 풀려 있거나 또는 풍량에 값이 문자열이거나 최소크기의 값이 문자열이거나
+//     // 압력체크박스 체크가 안풀려 있고 그리고 압력입력란의 값이 0 이거나 또는 속도체크박스 체크가 안풀려 있고 그리고
+//     // 속도입력란의 값이 0 이거나 또는 select 가 원형덕트가 아니거나 첫번째 H(mm) 입력란의 값이 0이 아니면
+//     // err1 로 가라
+//
+//     // If (Oduct.CBc1 = False And Oduct.CBc2 = False) Or Oduct.TextBoxc4.Text = "" Or Oduct.TextBoxc12.Text = "" _
+//     // Or (Oduct.CBc1 = True And Val(Oduct.TextBoxc2.Text) = 0) Or (Oduct.CBc2 = True And Val(Oduct.TextBoxc3.Text) = 0) _
+//     // Or (Not Oduct.CBc3.Text = "원형덕트" And Val(Oduct.TextBoxc5.Text) = 0) Then
+//     // GoTo err1
+//     // End If
+//
+//     const r1 = 7
+//     const R = 0
+//     const t1 = 0
+//
+//     // ' Duct _ 계산
+//     // .Range("u7:w7").ClearContents           U7 부터 W7까지 내용삭제
+//     let u7 = 0
+//     let v7 = 0
+//     let w7 = 0
+//
+//     //.Range("ai7").ClearContents             AI7 내용삭제
+//     let ai7 = 0
+//     //.Range("ak7:al7").ClearContents         AK7 부터 AL7 내용 삭제
+//     let ak7 = 0; //h
+//     let al7 = 0; //w
+//     //.Range("an7:ao7").ClearContents         AN7 부텨 AO7 내용삭제
+//     // R6     풍량입력란에 적힌 값이 저장됨
+//     let R6=  250 ;
+//     // X6     속도입력란에 적힌 값이 저장됨
+//     let speed= 10;
+//
+//     let E = 0.16;      // 재료조도입력란에 적힌 값이 저장됨
+//     let t = 50          //최소크기입력란에 적힌 값이 저장됨
+//
+//     let d = 0
+//     let D0 = 0
+//     let d1 = 0
+//     let d2 = 0
+//          ai7 = 1
+//         al7 = 1
+//     let  an7 = 1;
+//
+//     let U7 =  1//압력입력란에 적힌값
+//     let V7 = 10 //속도입력란에 적힌값
+//     let W7 = 200//첫 번째 H(mm) 입력란에 적힌 값
+//
+//     let  q =  750     //풍량입력란에 적힌값
+//     let ah7 = -0.00013
+//     // If Oduct.CBc1 = True Then
+//     //     .Range("ah" & R + r1).GoalSeek _
+//     // Goal:=0, ChangingCell:=.Range("ai" & R + r1)
+//     ah7 = 0;
+//      d1 = 247.17;
+//     if (d1 <= 0) {
+//         return;
+//     }
+//
+//
+//     // 풍량이 10 전제 조건
+//     // Q = 10
+//     // Q / 3600
+//     // 0.0027777777777778
+//     // d1 = 53.27 / 1000
+//     // 0.05327
+//     // 3.141592 * 0.05327
+//     // 0.16735260584 ^ 2
+//     // 0.0280068946814384
+//     // 4 * 0.0027777777777778
+//     // 0.0111111111111112 / 0.0280068946814384
+//     // 0.396727707141167
+//     // v = 0.396727707141167
+//     // v*d1
+//     // 21.13368495940996 * 100
+//     // 2,113.368495940996 / 1.5
+//     // 1,408.912330627331
+//     // Re2 = 1,408.912330627331
+//     // F = 0.0454251117040784
+//     // P1 = ?
+//     //     0.0454251117040784 / 0.10654 * 1.2 * 0.396727707141167 ^ 2
+//     //     P1 = 0.0412016093159056
+//     //
+//     let AI7 = 247.174611457851
+//     let ag=0.02096
+//     let v = 4 * (q / 3600) / (3.141592 * (d1 / 1000) ^ 2)
+//     let Re2 = v * d1 * 100 / 1.5
+//     let F = 0
+//     if( Re2 >= 4000) {
+//         F = 0.0055 * (1 + (20000 * E / d1 + 10 ^ 6 / Re2) ^ (1 / 3))
+//     }else {
+//         d1 = findAI7(R6,u7)
+//         if (d1 <= 0) {
+//             return
+//         }
+//     }
+//
+//     v = 4 * (Q / 3600) / (3.141592 * (d1 / 1000) ^ 2)
+//     Re2 = v * d1 * 100 / 1.5
+//     F = 64 / Re2
+//     End If
+//     P1 = F / (2 * d1 / 1000) * 1.2 * v ^ 2
+//
+//     If Oduct.CBc3.Text = "사각덕트" Then
+//         .Range("ak" & R + r1) = .Range("w" & R + r1)
+//         .Range("aj" & R + r1).GoalSeek _
+//     Goal:=1, ChangingCell:=.Range("al" & R + r1)
+//     ak = 5454
+//
+//     w = Application.RoundUp(.Range("al" & R + r1), 0)
+//     v = (Q / 3600) / (.Range("ak" & R + r1) / 1000 * w / 1000)
+//     ElseIf Oduct.CBc3.Text = "오발덕트" Then
+//         .Range("ao" & R + r1) = .Range("w" & R + r1)
+//     h = .Range("w" & R + r1)
+//         .Range("am" & R + r1).GoalSeek _
+//     Goal:=1, ChangingCell:=.Range("an" & R + r1)
+//     w = Application.RoundUp(.Range("an" & R + r1), 0)
+//     If w < h Then
+//     w = h
+//     End If
+//     v = (Q / 3600) / ((3.141592 * (h / 1000) ^ 2 / 4) + (h / 1000) * (w / 1000 - h / 1000))
+//     End If
+//     End If
+//     If Oduct.CBc1 = False And Oduct.CBc2 = True Then
+//     v = .Range("v" & R + r1)
+//     d2 = (4 * (Q / 3600) / (3.141592 * v)) ^ 0.5 * 1000
+//     End If
+//     D0 = Application.Max(d1, d2)
+//
+//     ' Duct _ 재계산
+//     rcl1:
+//         If Oduct.CBc3.Text = "원형덕트" Then
+//     d = Application.RoundUp(D0 / t, 0) * t + t1
+//     V1 = 4 * (Q / 3600) / (3.141592 * (d / 1000) ^ 2)
+//     ElseIf Oduct.CBc3.Text = "사각덕트" Then
+//     b = .Range("w" & R + r1)
+//     If d1 > d2 Then
+//     A1 = Application.RoundUp(w / t, 0) * t + t1
+//     Else
+//     V1 = .Range("v" & R + r1)
+//     A1 = Application.RoundUp((Q / 3600) / (b / 1000 * V1) * 1000 / t, 0) * t
+//     End If
+//     V1 = (Q / 3600) / (A1 / 1000 * b / 1000)
+//     d = 1.3 * ((A1 * b) ^ 5 / (A1 + b) ^ 2) ^ 0.125
+//     ElseIf Oduct.CBc3.Text = "오발덕트" Then
+//     b = .Range("w" & R + r1)
+//     If d1 > d2 Then
+//     A1 = Application.RoundUp(w / t, 0) * t + t1
+//     If A1 < b Then
+//     A1 = b
+//     End If
+//     Else
+//     V1 = .Range("v" & R + r1)
+//     A1 = Application.RoundUp((((Q / 3600) / V1 - (b / 1000) ^ 2 / 3.141592) / (b / 1000) + (b / 1000)) * 1000 / t, 0) * t
+//     If A1 < b Then
+//     A1 = b
+//     End If
+//     End If
+//     V1 = (Q / 3600) / ((3.141592 * (b / 1000) ^ 2 / 4) + b / 1000 * (A1 / 1000 - b / 1000))
+//     d = 1.55 * (3.141592 * b ^ 2 / 4 + b * (A1 - b)) ^ 0.625 / (3.141592 * b + 2 * (A1 - b)) ^ 0.25
+//     End If
+//
+//     If d = 0 Then
+//     GoTo err1
+//     End If
+//
+//     If Oduct.CBc1 = True And Oduct.CBc2 = True Then
+//     If V1 > .Range("v" & R + r1) Then
+//     t1 = t1 + t
+//     GoTo rcl1
+//     End If
+//     End If
+//
+//     v = 4 * (Q / 3600) / (3.141592 * (d / 1000) ^ 2)
+//     Re2 = v * d * 100 / 1.5
+//     If Re2 >= 4000 Then
+//     F = 0.0055 * (1 + (20000 * E / d + 10 ^ 6 / Re2) ^ (1 / 3))
+//     Else
+//     F = 64 / Re2
+//     End If
+//     P1 = F / (2 * d / 1000) * 1.2 * v ^ 2
+//
+//     If Oduct.CBc3.Text = "원형덕트" Then
+//     Oduct.Labelc6.Caption = Application.Round(d, 0)
+//     ElseIf Oduct.CBc3.Text = "사각덕트" Or Oduct.CBc3.Text = "오발덕트" Then
+//     Oduct.Labelc6.Caption = A1
+//     End If
+//     Oduct.Labelc7.Caption = Application.Round(P1, 3)
+//     Oduct.Labelc8.Caption = Application.Round(V1, 2)
+//     Oduct.Labelc9.Caption = Application.Round(F, 5)
+//
+//     Oduct.TextBoxc10.Text = Oduct.TextBoxc5.Text
+//     Oduct.TextBoxc11.Text = Oduct.Labelc6.Caption
+//     Oduct.Labelc12.Caption = Oduct.Labelc7.Caption
+//     Oduct.Labelc13.Caption = Oduct.Labelc8.Caption
+//     Oduct.Labelc14.Caption = Oduct.Labelc9.Caption
+//     End With
+//     Exit Sub
+//     err1:
+//         Oduct.Labelc6.Caption = ""
+//     Oduct.Labelc7.Caption = ""
+//     Oduct.Labelc8.Caption = ""
+//     Oduct.Labelc9.Caption = ""
+//     Oduct.TextBoxc10.Text = ""
+//     Oduct.TextBoxc11.Text = ""
+//     Oduct.Labelc12.Caption = ""
+//     Oduct.Labelc13.Caption = ""
+//     Oduct.Labelc14.Caption = ""
+//     End Sub
+//
+// }
+
+//
+// function calculate(R6, U7, AI7) {
+//     // If R6 or U7 is empty, return empty string
+//     if (R6 === "" || U7 === "") {
+//         return "";
+//     }
+//
+//     // Calculate the result based on the given formula
+//     let result = U7 * Math.pow((AI7 / 1000), 5)
+//         * Math.pow((Math.PI / (4 * R6 / 3600)), 2)
+//         * 2 / 1.2
+//         - 64 * Math.PI * AI7 / 1000
+//         / (4 * R6 / 3600) * 1.5 * Math.pow(10, -5);
+//
+//     return result;
+// }
+//
+// function findAI7(R6, U7, lowerBound = 0, upperBound = 100, tolerance = 0.001) {
+//     let mid = (upperBound + lowerBound) / 2.0;
+//     let result = calculate(R6, U7, mid);
+//
+//     if (Math.abs(result) < tolerance) {
+//         return mid;
+//     } else if (result < 0) {
+//         return findAI7(R6, U7, lowerBound, mid, tolerance);
+//     } else {
+//         return findAI7(R6, U7, mid, upperBound, tolerance);
+//     }
+// }
+
