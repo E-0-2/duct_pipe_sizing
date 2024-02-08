@@ -30,7 +30,7 @@ export const duct_cal03 = (state) => {
     ai7 = 1;
     al7 = 1;
     ak7 = 1;
-    an7 = 1;
+    an7 = 0;
     u7 = state.enter;
     v7 = state.speed;
     w7 = state.firstH;
@@ -48,6 +48,7 @@ export const duct_cal03 = (state) => {
 
         v = 4 * (q / 3600) / (3.141592 * (d1 / 1000) ** 2);
         re2 = v * d1 * 100 / 1.5;
+        console.log("re2 : ", re2);
 
         if (re2 >= 4000) {
             f = 0.0055 * (1 + Math.pow((20000 * e / d1 + Math.pow(10, 6) / re2), 1 / 3));
@@ -152,7 +153,7 @@ export const duct_cal03 = (state) => {
                 console.log("원형덕트", d);
                 state.firstD = Math.round(d);
             } else if (state.ducts === "사각덕트" || state.ducts === "오발덕트") {
-                console.log("사각오발", a1);
+                console.log(state.ducts === "사각덕트" ? "사각덕트" : "오발덕트", a1);
                 state.firstW = a1;
             }
             console.log("Calculated values: ", {d, a1, v1, p1, f});
@@ -166,9 +167,10 @@ export const duct_cal03 = (state) => {
             firstF: parseFloat(Number(f).toFixed(5)),
             secondH: state.firstH,
             secondW: state.firstW,
-            secondP: state.firstP,
-            secondV: state.firstV,
-            secondF: state.firstF,// 소수점 아래 2자리에서 반올림 // 소수점 아래 2자리에서 반올림
+            secondD: Math.round(d),
+            secondP: parseFloat(Number(p1).toFixed(3)),
+            secondV: parseFloat(Number(v1).toFixed(2)),
+            secondF: parseFloat(Number(f).toFixed(5)),// 소수점 아래 2자리에서 반올림 // 소수점 아래 2자리에서 반올림
         };
         return updatedState;
     }
@@ -200,7 +202,7 @@ export const duct_cal04 = (state) => {
     q = parseFloat(state.windVolume);
 
     if (state.ducts === "원형덕트") {
-        d = parseFloat(state.secondW);
+        d = parseFloat(state.secondD);
         v1 = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
     } else if (state.ducts === "사각덕트") {
         b = parseFloat(state.secondW);

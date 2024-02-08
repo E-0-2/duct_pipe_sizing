@@ -50,26 +50,34 @@ export const AJ7GoalSeekAL7 = (r6, u7, ak7, al7, ai7) => {
     if (r6 === "" || u7 === "") {
         return "";
     } else {
-        return Math.pow(1.3 * Math.pow(ak7 * al7, 5) / Math.pow(ak7 + al7, 2), 1 / 8) / ai7;
+        return 1.3 * Math.pow((ak7 * al7) ** 5 / (ak7 + al7) ** 2, 1 / 8) / ai7;
     }
 }
 
-// eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line no-unused-vars
-export const AJ7GoalSeekAL7_2 = (r6, u7, ak7, al7, ai7) => {
-    let precision = 0.1; // 변경: 더 작은 정확도 설정
-    let stepSize = 0.1;   // 변경: 더 작은 단계 크기 설정
-    let al = al7;
-    let aj = AJ7GoalSeekAL7(r6, u7, ak7, al, ai7);
+export const AJ7GoalSeekAL7_2 = (r6, u7, ak7, ai7, al7) => {
+    const maxIteration = 10000;
+    const epsilon = 0.001;
+    let alOld = al7;
+    let alNew = alOld + epsilon;
+    let ajOld = AJ7GoalSeekAL7(r6, u7, ak7, alOld, ai7) - 1;
+    let ajNew = AJ7GoalSeekAL7(r6, u7, ak7, alNew, ai7) - 1;
 
-    while (Math.abs(aj - 1) > precision) { // 변경: 목표값과의 차이가 정확도보다 작은지 확인
-        al += stepSize;
-        aj = AJ7GoalSeekAL7(r6, u7, ak7, al, ai7);
+    for (let i = 0; i < maxIteration; i++) {
+        let temp = alNew;
+        const delta = ajNew - ajOld;
+
+        if (Math.abs(delta) < epsilon || Math.abs(ajNew) < epsilon) {
+            break;
+        }
+
+        alNew = alNew - ajNew * (alNew - alOld) / delta;
+        ajOld = ajNew;
+        ajNew = AJ7GoalSeekAL7(r6, u7, ak7, alNew, ai7) - 1;
+        alOld = temp;
     }
 
-    return al;
-}
-
+    return alNew;
+};
 export const AM7GoalSeekAN7 = (r6, u7, an7, ao7, ai7) => {
     if (r6 === "" || u7 === "") {
         return "";
@@ -88,8 +96,9 @@ export const AM7GoalSeekAN7_2 = (r6, u7, an7, ao7, ai7) => {
     let stepSize = 0.01;  // "an" 값 조정 단계 설정
     let an = an7;  // 초기 "an" 값 설정
     let am = AM7GoalSeekAN7(r6, u7, an, ao7, ai7);  // 초기 "am" 값 계산
-
+    console.log("am : ", am);
     while (Math.abs(am - 1) > precision) { // "am" 값이 1에 가까워지는 동안 "an" 값 조정
+        console.log("am : ", am);
         an += stepSize; // "an" 값 조정
         am = AM7GoalSeekAN7(r6, u7, an, ao7, ai7);  // 새로운 "am" 값 계산
     }

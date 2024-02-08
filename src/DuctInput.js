@@ -1,5 +1,4 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import DuctHead from "./DuctHead";
 import {} from './GoalSeek.js';
 import {} from './Error.js';
 import {duct_cal03, duct_cal04} from "./DuctCals";
@@ -137,9 +136,15 @@ const DuctInput = () => {
             return setState({...state, [e.target.name]: e.target.value});
         }
 
+        setState({...state, onSwitch: false, [e.target.name]: e.target.value});
 
-        setState({...state, onSwitch: false, [e.target.name]: e.target.value})
-
+        // 1.3*((AK7*AL7)^5/(AK7+AL7)^2)^(1/8)/(AI7)
+        //'duct_cal04' 호출
+        if (e.target.name === 'secondH' || e.target.name === 'secondD' || e.target.name === 'secondW') {
+            let currentState = {...state, onSwitch: false, [e.target.name]: e.target.value};
+            let newState = duct_cal04(currentState);
+            setState(newState);
+        }
         // 체크 박스 누르면 input 사용 불가 다시 한번더 누르면 사용 가능.
     }, [state]);
 
@@ -163,14 +168,10 @@ const DuctInput = () => {
             }));
         }
     }
-
-    const handleButtonClick = () => {
-        let currentState = {...state};
-        let newState = duct_cal03(currentState);
-        newState = duct_cal04(newState);
+    const onClickButton = () => {
+        let newState = duct_cal03(state);
         setState(newState);
     };
-
     useEffect(() => {
         console.log(state);
     }, [DuctInput]);// state가 변경될 때마다 useEffect가 실행
@@ -286,10 +287,10 @@ const DuctInput = () => {
                 </div>
             </div>
             <div>
-                <div> {JSON.stringify(state)} </div>
+                <button onClick={onClickButton}>계산</button>
             </div>
             <div>
-                <button onClick={handleButtonClick}>Calculate</button>
+                <div> {JSON.stringify(state)} </div>
             </div>
         </div>
     )

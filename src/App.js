@@ -5,6 +5,7 @@ import PipeMain from "./PipeMain";
 import Default from "./Default";
 import DuctResultView from "./DuctResultView";
 import DuctHead from "./DuctHead";
+import {duct_cal03} from "./DuctCals";
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -56,6 +57,12 @@ function App() {
         console.log("Initial data:", initData);
         dispatch({type: "DuctInitData", data: initData});
     }, []);
+
+    const updateState = () => {
+        dispatch({type: 'UPDATE_STATE'});
+    };
+
+
     const handleDuctClick = () => {
         setPage(page === 'duct' ? 'default' : 'duct');
     };
@@ -64,16 +71,13 @@ function App() {
         setPage(page === 'pipe' ? 'default' : 'pipe');
     }
 
-    const ductInput = useCallback((data) => {
-        dispatch({type: "DuctInput", data: ductInput(data)});
-    }, [dispatch]);
 
     return (
         <ductStateContext.Provider value={data}>
             <div className="AppStyle">
                 <div className={`appButtons`}>
-                    <button className={`appButton`} onClick={handleDuctClick}>DUCT</button>
-                    <button className={`appButton`} onClick={handlePipeClick}>PIPE</button>
+                    <button className={`appButtonDuct`} onClick={handleDuctClick}>DUCT</button>
+                    <button className={`appButtonPipe`} onClick={handlePipeClick}>PIPE</button>
                 </div>
                 <div>
                     {page === 'duct' && (
