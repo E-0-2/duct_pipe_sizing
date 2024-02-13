@@ -1,6 +1,4 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import {} from './GoalSeek.js';
-import {} from './Error.js';
 import {duct_cal03, duct_cal04} from "./DuctCals";
 import {ductStateContext} from "./App";
 
@@ -18,10 +16,11 @@ const DuctInput = () => {
 
     // state 값 변경 메서드
     const handleChange = useCallback((e) => {
-
+        const validInputRegex = /^[.0-9]*$/;
+        let validInputRegex_2 = /^[0-9]*$/;
         if (e.target.name === 'materialRoughness') {
             let value = parseFloat(e.target.value);
-            let validInputRegex = /^[.0-9]*$/;  // 소수점 또는 숫자로 시작하는지 확인하는 정규식
+            // 소수점 또는 숫자로 시작하는지 확인하는 정규식
 
             if (!validInputRegex.test(e.target.value) || isNaN(value)) {
                 if (e.target.value !== '') {
@@ -38,11 +37,10 @@ const DuctInput = () => {
         }
 
 
-        if (e.target.name === 'minSize') {               // 완료
-            let value = parseFloat(e.target.value);
-            // state 가 false 가 되는 조건도 추가 해야함
-            // Check if the value is not a number and not an empty string
-            if (isNaN(value) && e.target.value !== '' || e.target.value.includes('.')) {
+        if (e.target.name === 'minSize') {
+            let value = parseFloat(e.target.value);// 숫자로만 구성되어 있는지 확인하는 정규식
+
+            if (!validInputRegex_2.test(e.target.value)) {
                 alert('숫자만 입력해주세요');
                 return setState({...state, onSwitch: true, [e.target.name]: ""});
             } else if (value < 0) {
@@ -50,17 +48,15 @@ const DuctInput = () => {
                 return setState({...state, onSwitch: true, [e.target.name]: ""});
             } else if (value >= 100) {
                 alert('최소크기의 값을 100 미만으로 작성해주세요');
-                return setState({...state, [e.target.name]: ""})
+                return setState({...state, [e.target.name]: ""});
             }
-
         }
         if (e.target.name === 'enter') {            // 완료
             let value = parseFloat(e.target.value);
-            if (isNaN(value)) {
-                if (e.target.value !== '') {
-                    alert('숫자 와 소수점(.)만 입력해주세요 -주의- (숫자 다음 소수점을 입력을 할수 있음)');
-                    return setState({...state, onSwitch: true, [e.target.name]: 1});
-                }
+            if (!validInputRegex.test(e.target.value) || isNaN(value) && e.target.value !== '') {
+
+                alert('숫자 와 소수점(.)만 입력해주세요 -주의- (숫자 다음 소수점을 입력을 할수 있음)');
+                return setState({...state, onSwitch: true, [e.target.name]: 1});
             } else if (value < 0) {
                 alert('입력 값을 0 이상으로 작성해주세요');
                 setState({...state, [e.target.name]: 1});
@@ -73,7 +69,7 @@ const DuctInput = () => {
         if (e.target.name === 'speed') {            // 완료
             let value = parseFloat(e.target.value);
             // state 가 false 가 되는 조건도 추가 해야함
-            if (isNaN(value) && e.target.value !== '') {
+            if (!validInputRegex.test(e.target.value) || isNaN(value) && e.target.value !== '') {
                 alert('숫자 와 소수점(.)만 입력해주세요 -주의- (숫자 다음 소수점을 입력을 할수 있음)');
                 return setState({...state, onSwitch: true, [e.target.name]: 10});
             } else if (value < 0) {
@@ -87,7 +83,7 @@ const DuctInput = () => {
         if (e.target.name === 'windVolume') {            // 완료
             let value = parseFloat(e.target.value);
             // state 가 false 가 되는 조건도 추가 해야함
-            if (isNaN(value) && e.target.value !== '' || e.target.value.includes('.')) {
+            if (!validInputRegex_2.test(e.target.value)) {
                 alert('숫자만 입력해주세요');
                 return setState({...state, onSwitch: true, [e.target.name]: ""});
             } else if (value < 0) {
@@ -102,7 +98,7 @@ const DuctInput = () => {
         if (e.target.name === 'firstH' || e.target.name === 'secondH') {         //완료
             let value = parseFloat(e.target.value);
             // state 가 false 가 되는 조건도 추가 해야함
-            if (isNaN(value) && e.target.value !== '' || e.target.value.includes('.')) {
+            if (!validInputRegex_2.test(e.target.value)) {
                 alert('숫자만 입력해주세요');
                 return setState({...state, onSwitch: true, [e.target.name]: ""});
             } else if (value < 0) {
@@ -114,10 +110,10 @@ const DuctInput = () => {
             }
         }
 
-        if (e.target.name === 'secondW') {                                       //완료
+        if (e.target.name === 'secondW' || e.target.name === 'secondD') {                                       //완료
             let value = parseFloat(e.target.value);
             // state 가 false 가 되는 조건도 추가 해야함
-            if (isNaN(value) && e.target.value !== '' || e.target.value.includes('.')) {
+            if (!validInputRegex_2.test(e.target.value)) {
                 alert('숫자만 입력해주세요');
                 return setState({...state, onSwitch: true, [e.target.name]: ""});
             } else if (value < 0) {
@@ -138,6 +134,7 @@ const DuctInput = () => {
 
         setState({...state, onSwitch: false, [e.target.name]: e.target.value});
 
+        ductCal03(state);
         // 1.3*((AK7*AL7)^5/(AK7+AL7)^2)^(1/8)/(AI7)
         //'duct_cal04' 호출
         if (e.target.name === 'secondH' || e.target.name === 'secondD' || e.target.name === 'secondW') {
@@ -147,6 +144,10 @@ const DuctInput = () => {
         }
         // 체크 박스 누르면 input 사용 불가 다시 한번더 누르면 사용 가능.
     }, [state]);
+
+    const ductCal03 = (state) => {
+        return duct_cal03(state);
+    }
 
     const handleCheckboxChange = (e) => {
         const name = e.target.name; // Checkbox name

@@ -28,13 +28,13 @@ export const duct_cal03 = (state) => {
     d1 = 0;
     d2 = 0;
     ai7 = 1;
-    al7 = 1;
+    al7 = 0;
     ak7 = 1;
     an7 = 0;
-    u7 = state.enter;
-    v7 = state.speed;
-    w7 = state.firstH;
-    q = state.windVolume;
+    u7 = Number(state.enter);
+    v7 = Number(state.speed);
+    w7 = Number(state.firstH);
+    q = Number(state.windVolume);
     r6 = q;
     if (state.enterChecked === true) {
 
@@ -70,16 +70,19 @@ export const duct_cal03 = (state) => {
         if (state.ducts === "사각덕트") {
             ak7 = w7;
 
-
             // eslint-disable-next-line no-undef
             al7 = AJ7GoalSeekAL7_2(r6, u7, ak7, al7, ai7);
-
-            console.log("al : ", al7);
             w = Math.ceil(al7);
             v = (q / 3600) / (ak7 / 1000 * w / 1000);
         } else if (state.ducts === "오발덕트") {
             ao7 = w7;
             h = w7;
+            console.log("r6 : ", r6);
+            console.log("u7 : ", u7);
+            console.log("ao7 : ", ao7);
+            console.log("ai7 : ", ai7);
+            console.log("an7 : ", an7);
+
             // eslint-disable-next-line no-undef
             an7 = AM7GoalSeekAN7_2(r6, u7, an7, ao7, ai7);
             console.log("an : ", an7);
@@ -115,9 +118,11 @@ export const duct_cal03 = (state) => {
                     a1 = Math.ceil(((q / 3600) / (b / 1000 * v1) * 1000 / t)) * t;
                 }
 
-                v1 = (q / 3600) / (a1 / 1000 * b / 1000);
-                d = 1.3 * ((a1 * b) ** 5 / (a1 + b) ** 2) ** 0.125;
 
+                // a1 = parseFloat(state.firstH);
+                console.log("높이 : ", a1);
+                v1 = (q / 3600) / (a1 / 1000 * b / 1000);
+                d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
             } else if (state.ducts === "오발덕트") {
                 b = w7;
                 if (d1 > d2) {
@@ -140,7 +145,7 @@ export const duct_cal03 = (state) => {
                 // eslint-disable-next-line no-undef
                 err1();
             }
-            v = 4 * (q / 3600) / (3.141592 * (d / 1000) ** 2);
+            v = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
             re2 = v * d * 100 / 1.5;
             if (re2 >= 4000) {
                 f = 0.0055 * (1 + Math.pow((20000 * e / d + Math.pow(10, 6) / re2), 1 / 3));
@@ -209,6 +214,7 @@ export const duct_cal04 = (state) => {
         a1 = parseFloat(state.secondH);
         v1 = (q / 3600) / (a1 / 1000 * b / 1000);
         d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
+        console.log("높이 : ", a1, "너비 : ", b, "d  : ", d);
     } else if (state.ducts === "오발덕트") {
         b = parseFloat(state.secondH);
         a1 = parseFloat(state.secondW);

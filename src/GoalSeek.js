@@ -10,7 +10,7 @@ export const AH7GoalSeekAI7 = (r6, u7, ai7, x6) => {
 // eslint-disable-next-line no-unused-vars
 export const AH7GoalSeekAI7_2 = (r6, u7, ai7, x6) => {
 
-    let precision = 0.00041;  // 원하는 정확도 설정
+    let precision = 0.00037;  // 원하는 정확도 설정
     let stepSize = 0.01;  // "ai" 값 조정 단계 설정
     let ai = ai7;  // 초기 "ai" 값 설정
     let ah = AH7GoalSeekAI7(r6, u7, ai, x6);  // 초기 "ah" 값 계산
@@ -34,7 +34,7 @@ export const AG7GoalSeekAI7 = (r6, u7, ai7) => {
 
 // eslint-disable-next-line no-unused-vars
 export const AG7GoalSeekAI7_2 = (r6, u7, ai7) => {
-    let precision = 0.00041;  // 원하는 정확도 설정
+    let precision = 0.00037;  // 원하는 정확도 설정
     let stepSize = 0.01;  // "ai" 값 조정 단계 설정
     let ai = ai7;  // 초기 "ai" 값 설정
     let ag = AG7GoalSeekAI7(r6, u7, ai);  // 초기 "ag" 값 계산
@@ -47,37 +47,36 @@ export const AG7GoalSeekAI7_2 = (r6, u7, ai7) => {
     return ai; // 조정된 "ai" 값 반환
 }
 export const AJ7GoalSeekAL7 = (r6, u7, ak7, al7, ai7) => {
-    if (r6 === "" || u7 === "") {
-        return "";
-    } else {
-        return 1.3 * Math.pow((ak7 * al7) ** 5 / (ak7 + al7) ** 2, 1 / 8) / ai7;
-    }
-}
+    // Make sure r6 and u7 are numbers
+    r6 = parseFloat(r6);
+    u7 = parseFloat(u7);
 
-export const AJ7GoalSeekAL7_2 = (r6, u7, ak7, ai7, al7) => {
-    const maxIteration = 10000;
-    const epsilon = 0.001;
-    let alOld = al7;
-    let alNew = alOld + epsilon;
-    let ajOld = AJ7GoalSeekAL7(r6, u7, ak7, alOld, ai7) - 1;
-    let ajNew = AJ7GoalSeekAL7(r6, u7, ak7, alNew, ai7) - 1;
+    // Check for a valid number
+    if (isNaN(r6) || isNaN(u7)) return 0;
 
-    for (let i = 0; i < maxIteration; i++) {
-        let temp = alNew;
-        const delta = ajNew - ajOld;
-
-        if (Math.abs(delta) < epsilon || Math.abs(ajNew) < epsilon) {
-            break;
-        }
-
-        alNew = alNew - ajNew * (alNew - alOld) / delta;
-        ajOld = ajNew;
-        ajNew = AJ7GoalSeekAL7(r6, u7, ak7, alNew, ai7) - 1;
-        alOld = temp;
-    }
-
-    return alNew;
+    // Use the same formula as in the VBA code
+    const result = 1.3 * Math.pow((Math.pow(ak7 * al7, 5) / Math.pow(ak7 + al7, 2)), 1 / 8);
+    return result / ai7;
 };
+
+export const AJ7GoalSeekAL7_2 = (r6, u7, ak7, al7, ai7) => {
+    let precision = 0.1;  // 원하는 정확도 설정 수정
+    let stepSize = 1;  // "al" 값 조정 단계 설정
+    let al = al7;  // 초기 "al" 값 설정
+    let aj = AJ7GoalSeekAL7(r6, u7, ak7, al, ai7);  // 초기 "aj" 값 계산
+
+    console.log(`Initial aj: ${aj}, al: ${al}`);
+    console.log(`r6: ${r6}, u7: ${u7}, ak7: ${ak7}, al: ${al}, ai7: ${ai7}`);
+    while (Math.abs(aj - 1) > precision) { // "aj" 값이 1에 가까워지는 동안 "al" 값 조정
+        al += stepSize; // "al" 값을 조정
+        aj = AJ7GoalSeekAL7(r6, u7, ak7, al, ai7);  // 새로운 "aj" 값 계산
+    }
+
+    console.log(`Final aj: ${aj}, al: ${al}`);
+
+
+    return al; // 조정된 "al" 값 반환
+}
 export const AM7GoalSeekAN7 = (r6, u7, an7, ao7, ai7) => {
     if (r6 === "" || u7 === "") {
         return "";
@@ -92,16 +91,16 @@ export const AM7GoalSeekAN7 = (r6, u7, an7, ao7, ai7) => {
 
 // eslint-disable-next-line no-unused-vars
 export const AM7GoalSeekAN7_2 = (r6, u7, an7, ao7, ai7) => {
-    let precision = 1;  // 원하는 정확도 설정
+    let precision = 0.0001;  // 원하는 정확도 설정
     let stepSize = 0.01;  // "an" 값 조정 단계 설정
     let an = an7;  // 초기 "an" 값 설정
     let am = AM7GoalSeekAN7(r6, u7, an, ao7, ai7);  // 초기 "am" 값 계산
     console.log("am : ", am);
     while (Math.abs(am - 1) > precision) { // "am" 값이 1에 가까워지는 동안 "an" 값 조정
-        console.log("am : ", am);
         an += stepSize; // "an" 값 조정
         am = AM7GoalSeekAN7(r6, u7, an, ao7, ai7);  // 새로운 "am" 값 계산
+        console.log("an : ", an, "am : ", am);
     }
-
+    console.log("an : ", an);
     return an; // 조정된 "an" 값 반환
 }
