@@ -1,27 +1,44 @@
-import React, {useContext} from 'react';
-import {ductStateContext} from './App';
+import React, {useEffect, useState} from 'react';
+import {duct_cal03} from "./DuctCals";
 
-const DuctResultView = () => {
-    // 컨텍스트에서 데이터 받아오기
-    const data = useContext(ductStateContext);
-    console.log("data: ", data);
 
-    if (!data) {
-        return <div>Loading...</div>;
-    }
+const DuctResultView = ({data}) => {
 
-    const {windVolume, firstH, firstW, firstP, firstV, firstD, ducts} = data;
+    const [state, setState] = useState(data);
+    const [result, setResult] = useState([]);
+
+
+    useEffect(() => {
+        console.log(data);
+        setState(data);
+        setResult(prev => [...prev, data]);
+        if (result.length >= 8) {
+            setResult([]);
+        }
+    }, [data]);
 
     return (
-        <div className="DuctResultView">
-            <h2>Result</h2>
-            <div>
-                <div>풍량: {windVolume || "N/A"}</div>
-                <div>{ducts === "원형덕트" ? "D(mm): " : "W(mm): "}{ducts === "원형덕트" ? firstD || "N/A" : firstW || "N/A"}</div>
-                {!ducts || ducts !== "원형덕트" ? <div>H(mm): {firstH || "N/A"}</div> : null}
-                <div>P(pa/m): {firstP || "N/A"}</div>
-                <div>V(m/s): {firstV || "N/A"}</div>
-            </div>
+        <div className={"DuctInputListClass"}>
+            <table border={1} className={"info"}>
+                <tbody>
+                <tr>
+                    <th className="info-item">Q(CMH)</th>
+                    <th className="info-item">H(mm)</th>
+                    <th className="info-item">{`${state.ducts === "원형덕트" ? "D(mm)" : "W(mm)"}`}</th>
+                    <th className="info-item">P(Pa/m)</th>
+                    <th className="info-item">V(m/s)</th>
+                </tr>
+                {result.map((item, index) => (
+                    <tr key={index}>
+                        <td>{item.windVolume}</td>
+                        <td>{item.firstH}</td>
+                        <td>{item.ducts === "원형덕트" ? item.firstD : item.firstW}</td>
+                        <td>{item.firstP}</td>
+                        <td>{item.firstF}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
         </div>
     );
 };

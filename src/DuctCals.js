@@ -40,7 +40,6 @@ export const duct_cal03 = (state) => {
 
         // eslint-disable-next-line no-undef
         ai7 = AH7GoalSeekAI7_2(r6, u7, ai7, x6);
-        console.log("ai : ", ai7);
         d1 = ai7;
         if (d1 <= 0) {
             err1();
@@ -48,7 +47,6 @@ export const duct_cal03 = (state) => {
 
         v = 4 * (q / 3600) / (3.141592 * (d1 / 1000) ** 2);
         re2 = v * d1 * 100 / 1.5;
-        console.log("re2 : ", re2);
 
         if (re2 >= 4000) {
             f = 0.0055 * (1 + Math.pow((20000 * e / d1 + Math.pow(10, 6) / re2), 1 / 3));
@@ -56,7 +54,7 @@ export const duct_cal03 = (state) => {
             // eslint-disable-next-line no-undef
             ai7 = AG7GoalSeekAI7_2(r6, u7, ai7);
             d1 = ai7;
-            console.log("ai : ", ai7);
+
             if (d1 <= 0) {
                 // eslint-disable-next-line no-undef
                 err1();
@@ -76,16 +74,8 @@ export const duct_cal03 = (state) => {
             v = (q / 3600) / (ak7 / 1000 * w / 1000);
         } else if (state.ducts === "오발덕트") {
             ao7 = w7;
-            h = w7;
-            console.log("r6 : ", r6);
-            console.log("u7 : ", u7);
-            console.log("ao7 : ", ao7);
-            console.log("ai7 : ", ai7);
-            console.log("an7 : ", an7);
-
-            // eslint-disable-next-line no-undef
+            h = w7;// eslint-disable-next-line no-undef
             an7 = AM7GoalSeekAN7_2(r6, u7, an7, ao7, ai7);
-            console.log("an : ", an7);
             w = Math.ceil(an7);
             if (w < h) {
                 w = h;
@@ -95,10 +85,8 @@ export const duct_cal03 = (state) => {
 
     }
     if (state.enterChecked === false && state.speedChecked === true) {
-        console.log("Debug Point 1");
         v = v7;
         d2 = (4 * (q / 3600) / (3.141592 * v)) ** 0.5 * 1000
-        console.log("Debug Point 2");
     }
     d0 = Math.max(d1, d2);
     // Duct _ 재계산
@@ -111,16 +99,12 @@ export const duct_cal03 = (state) => {
             } else if (state.ducts === "사각덕트") {
                 b = w7;
                 if (d1 > d2) {
-                    console.log("di : ", d1, "d2 : ", d2);
                     a1 = Math.ceil(w / t) * t + t1;
                 } else {
                     v1 = v7;
                     a1 = Math.ceil(((q / 3600) / (b / 1000 * v1) * 1000 / t)) * t;
                 }
 
-
-                // a1 = parseFloat(state.firstH);
-                console.log("높이 : ", a1);
                 v1 = (q / 3600) / (a1 / 1000 * b / 1000);
                 d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
             } else if (state.ducts === "오발덕트") {
@@ -138,7 +122,6 @@ export const duct_cal03 = (state) => {
                     }
                 }
                 v1 = (q / 3600) / ((3.141592 * (b / 1000) ** 2 / 4) + b / 1000 * (a1 / 1000 - b / 1000));
-                console.log("v1", v1);
                 d = 1.55 * (3.141592 * b ** 2 / 4 + b * (a1 - b)) ** 0.625 / (3.141592 * b + 2 * (a1 - b)) ** 0.25;
             }
             if (d === 0) {
@@ -152,31 +135,32 @@ export const duct_cal03 = (state) => {
             } else {
                 f = 64 / re2;
             }
-            console.log("v1", v1);
             p1 = f / (2 * d / 1000) * 1.2 * Math.pow(v, 2);
             if (state.ducts === "원형덕트") {
-                console.log("원형덕트", d);
                 state.firstD = Math.round(d);
             } else if (state.ducts === "사각덕트" || state.ducts === "오발덕트") {
-                console.log(state.ducts === "사각덕트" ? "사각덕트" : "오발덕트", a1);
                 state.firstW = a1;
             }
-            console.log("Calculated values: ", {d, a1, v1, p1, f});
         }
         let updatedState = {
             ...state,
-            firstD: Math.round(d),
             firstW: a1,
             firstP: parseFloat(Number(p1).toFixed(3)),
             firstV: parseFloat(Number(v1).toFixed(2)),
             firstF: parseFloat(Number(f).toFixed(5)),
             secondH: state.firstH,
             secondW: state.firstW,
-            secondD: Math.round(d),
             secondP: parseFloat(Number(p1).toFixed(3)),
             secondV: parseFloat(Number(v1).toFixed(2)),
             secondF: parseFloat(Number(f).toFixed(5)),// 소수점 아래 2자리에서 반올림 // 소수점 아래 2자리에서 반올림
         };
+        if (state.ducts === "원형덕트") {
+            updatedState = {
+                ...updatedState,
+                firstDD: Math.round(d),
+                secondD: Math.round(d),
+            }
+        }
         return updatedState;
     }
     return rcl1(state);
@@ -214,7 +198,6 @@ export const duct_cal04 = (state) => {
         a1 = parseFloat(state.secondH);
         v1 = (q / 3600) / (a1 / 1000 * b / 1000);
         d = 1.3 * Math.pow((Math.pow(a1 * b, 5) / Math.pow(a1 + b, 2)), 0.125);
-        console.log("높이 : ", a1, "너비 : ", b, "d  : ", d);
     } else if (state.ducts === "오발덕트") {
         b = parseFloat(state.secondH);
         a1 = parseFloat(state.secondW);
