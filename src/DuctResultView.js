@@ -1,21 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {duct_cal03} from "./DuctCals";
-
 
 const DuctResultView = ({data}) => {
-
     const [state, setState] = useState(data);
     const [result, setResult] = useState([]);
 
+    useEffect(() => {
+        setState(data);
+    }, [data]);
 
     useEffect(() => {
-        console.log(data);
-        setState(data);
-        setResult(prev => [...prev, data]);
+        setResult(prev => [...prev, state]);
+    }, [state]);
+
+    useEffect(() => {
         if (result.length >= 8) {
             setResult([]);
         }
-    }, [data]);
+    }, [result]);
 
     return (
         <div className={"DuctInputListClass"}>
@@ -34,7 +35,7 @@ const DuctResultView = ({data}) => {
                         <td>{item.firstH}</td>
                         <td>{item.ducts === "원형덕트" ? item.firstD : item.firstW}</td>
                         <td>{item.firstP}</td>
-                        <td>{item.firstF}</td>
+                        <td>{item.firstV}</td>
                     </tr>
                 ))}
                 </tbody>

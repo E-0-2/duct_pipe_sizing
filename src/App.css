@@ -84,7 +84,7 @@ body {
 
 .DuctInputClass {
 
-    max-width: 800px;
+    max-width: 66%;
     border: 1px solid var(--primary-color);
     margin: 0 auto;
     padding: 80px;
@@ -104,9 +104,10 @@ body {
 
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 26px;
+    padding: 15px;
     flex-wrap: wrap;
+    margin-right: 10px;
 }
 
 .DuctInputClass .form-field,
@@ -209,23 +210,23 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    width: 400%;
+    width: 314%;
     margin-top: 0;
-    margin-left: auto;
+    margin-left: -73%;
     margin-right: auto;
 }
 
 
 .DuctInputSelectClass .SelectPart select {
-    width: 200px;
-    padding: 5px;
+    width: 100px;
+    padding: 7px;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
 
 .DuctInputSelectClass .SelectPart input, div input {
     width: 100px;
-    padding: 5px;
+    padding: 8px;
     margin: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -236,7 +237,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
+    width: 104%;
     justify-content: space-between;
 }
 
@@ -257,9 +258,10 @@ body {
 }
 
 table.info {
-    width: 100%;
+    margin-right: 7px;
+    width: 97%;
     border-collapse: collapse;
-    margin-top: 50px;
+    margin-top: -22px;
 }
 
 th, td {

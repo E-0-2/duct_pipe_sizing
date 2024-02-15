@@ -8,13 +8,15 @@ export const duct_cal03 = (state) => {
     let u7, v7, w7, ai7, ak7, al7, ao7, an7, ah7, am7, aj7;
     const WS = {};
     const duct = {};
-    p1 = 0;
+
+
     if ((state.enterChecked === false && state.speedChecked === false) || state.windVolume === "" || state.minSize === ""
         || (state.enterChecked && parseInt(state.enter) === 0) || (state.speedChecked && parseInt(state.speed) === 0)
         || (state.ducts !== "원형덕트" && parseInt(state.firstH) === 0)
     ) {
         err1();
     }
+    p1 = 0;
     r1 = 7;
     r = 0;
     t1 = 0;
@@ -91,7 +93,7 @@ export const duct_cal03 = (state) => {
     d0 = Math.max(d1, d2);
     // Duct _ 재계산
     const rcl1 = (state) => {
-        for (let n = 0; n < 10; n++) {
+        for (let n = 0; n < 1; n++) {
             if (state.ducts === "원형덕트") {
                 d = Math.ceil(d0 / t) * t + t1;
                 v1 = 4 * (q / 3600) / (Math.PI * Math.pow((d / 1000), 2));
@@ -141,27 +143,38 @@ export const duct_cal03 = (state) => {
             } else if (state.ducts === "사각덕트" || state.ducts === "오발덕트") {
                 state.firstW = a1;
             }
-        }
-        let updatedState = {
-            ...state,
-            firstW: a1,
-            firstP: parseFloat(Number(p1).toFixed(3)),
-            firstV: parseFloat(Number(v1).toFixed(2)),
-            firstF: parseFloat(Number(f).toFixed(5)),
-            secondH: state.firstH,
-            secondW: state.firstW,
-            secondP: parseFloat(Number(p1).toFixed(3)),
-            secondV: parseFloat(Number(v1).toFixed(2)),
-            secondF: parseFloat(Number(f).toFixed(5)),// 소수점 아래 2자리에서 반올림 // 소수점 아래 2자리에서 반올림
-        };
-        if (state.ducts === "원형덕트") {
-            updatedState = {
-                ...updatedState,
-                firstDD: Math.round(d),
-                secondD: Math.round(d),
+            if (typeof p1 !== 'number' || isNaN(p1) || p1 < 0) {
+                p1 = 0;
             }
+            if (typeof v1 !== 'number' || isNaN(v1) || v1 < 0) {
+                v1 = 0;
+            }
+            if (typeof f !== 'number' || isNaN(f) || f < 0) {
+                f = 0;
+            }
+            console.log("p1 : ", p1, "v1 : ", v1, "f : ", f);
+            let updatedState = {
+                ...state,
+                firstP: parseFloat(Number(p1).toFixed(3)),
+                firstV: parseFloat(Number(v1).toFixed(2)),
+                firstF: parseFloat(Number(f).toFixed(5)),
+                firstW: a1,
+                secondH: state.firstH,
+                secondW: state.firstW, // 소수점 아래 2자리에서 반올림 // 소수점 아래 2자리에서 반올림
+                secondP: parseFloat(Number(p1).toFixed(3)),
+                secondV: parseFloat(Number(v1).toFixed(2)),
+                secondF: parseFloat(Number(f).toFixed(5)),
+            };
+            if (state.ducts === "원형덕트") {
+                updatedState = {
+                    ...updatedState,
+                    firstDD: Math.round(d),
+                    secondD: Math.round(d),
+                }
+            }
+            return updatedState;
         }
-        return updatedState;
+
     }
     return rcl1(state);
 };

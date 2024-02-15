@@ -1,8 +1,9 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {duct_cal03, duct_cal04} from "./DuctCals";
 import {ductStateContext} from "./App";
 import DuctHead from "./DuctHead";
 import DuctResultView from "./DuctResultView";
+
 
 // const reducer = (state, action) => {
 //     switch (action.type) {
@@ -20,6 +21,25 @@ const DuctInput = () => {
 
     const data = useContext(ductStateContext);
     const [state, setState] = useState(data);
+    const useRefs = {
+        materialRoughness: useRef(),
+        minSize: useRef(),
+        enter: useRef(),
+        speed: useRef(),
+        windVolume: useRef(),
+        firstH: useRef(),
+        secondH: useRef(),
+        secondW: useRef(),
+    }
+    const [view, setView] = useState({
+        windVolume: state.windVolume,
+        firstH: state.firstH,
+        ducts: state.ducts,
+        firstW: state.firstW,
+        firstD: state.firstD,
+        firstP: state.firstP,
+        firstV: state.firstV,
+    });
 
 
     // state 값 변경 메서드
@@ -29,16 +49,13 @@ const DuctInput = () => {
         const validInputRegex = /^[.0-9]*$/;
         let validInputRegex_2 = /^[0-9]*$/;
         const defaultState = {...state, onSwitch: false, [eTName]: eTValue};
+        const ductCal04 = {onSwitch: false, [eTName]: eTValue};
         const onSwitchStates = {
             onSwitchTrueAndInsertSpace: setState({...state, onSwitch: true, [eTName]: ""}),
             onSwitchTrueAndInsert1: setState({...state, onSwitch: true, [eTName]: 1}),
             onSwitchTrueAndInsert10: setState({...state, onSwitch: true, [eTName]: 10}),
             onSwitchFalseAndInsertSpace: setState({...state, [eTName]: ""}),
             onSwitchFalseAndInsert1: setState({...state, [eTName]: 1}),
-        }
-        const alerts = {
-            alertNumAndDot: () => alert('숫자와 소수점(.)만 입력해주세요 -주의- (숫자 다음에 소수점을 입력할 수 있음'),
-            alertNum: () => alert('숫자만 입력해주세요'),
         }
 
         if (eTName === 'materialRoughness') {
@@ -47,14 +64,14 @@ const DuctInput = () => {
 
             if (!validInputRegex.test(eTValue) || isNaN(value)) {
                 if (e.target.value !== '') {
-                    alerts.alertNumAndDot();
+                    useRefs.materialRoughness.current.focus();
                     return onSwitchStates.onSwitchTrueAndInsertSpace
                 }
             } else if (value < 0) {
-                alert('재료조도의 값을 0 이상으로 작성해주세요');
+                useRefs.materialRoughness.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace
             } else if (value >= 5) {
-                alert('재료조도의 값을 5 미만으로 작성해주세요');
+                useRefs.materialRoughness.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsertSpace
             }
         }
@@ -64,26 +81,26 @@ const DuctInput = () => {
             let value = parseFloat(eTValue);// 숫자로만 구성되어 있는지 확인하는 정규식
 
             if (!validInputRegex_2.test(eTValue)) {
-                alerts.alertNum();
+                useRefs.minSize.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value < 0) {
-                alert('최소크기의 값을 0 이상으로 작성해주세요');
+                useRefs.minSize.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value >= 100) {
-                alert('최소크기의 값을 100 미만으로 작성해주세요');
+                useRefs.minSize.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsertSpace;
             }
         }
         if (eTName === 'enter') {            // 완료
             let value = parseFloat(eTValue);
             if (!validInputRegex.test(eTValue) || isNaN(value) && eTValue !== '') {
-                alerts.alertNumAndDot();
+                useRefs.enter.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsert1;
             } else if (value < 0) {
-                alert('입력 값을 0 이상으로 작성해주세요');
+                useRefs.enter.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsert1;
             } else if (value >= 10) {
-                alert('입력 값을 10 미만으로 작성해주세요');
+                useRefs.enter.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsert1;
             }
         }
@@ -91,13 +108,13 @@ const DuctInput = () => {
             let value = parseFloat(eTValue);
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex.test(eTValue) || isNaN(value) && eTValue !== '') {
-                alerts.alertNumAndDot();
+                useRefs.speed.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsert10;
             } else if (value < 0) {
-                alert('입력 값을 0 이상으로 작성해주세요');
+                useRefs.speed.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsert10;
             } else if (value > 30) {
-                alert('입력 값을 31 미만으로 작성해주세요');
+                useRefs.speed.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsert1;
             }
         }
@@ -105,13 +122,13 @@ const DuctInput = () => {
             let value = parseFloat(eTValue);
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex_2.test(eTValue)) {
-                alerts.alertNum();
+                useRefs.windVolume.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value < 0) {
-                alert('입력 값을 0 이상으로 작성해주세요');
+                useRefs.windVolume.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value > 999999) {
-                alert('입력 값을 1000000 미만으로 작성해주세요');
+                useRefs.windVolume.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsertSpace;
             }
         }
@@ -119,13 +136,27 @@ const DuctInput = () => {
             let value = parseFloat(eTValue);
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex_2.test(eTValue)) {
-                alerts.alertNum();
+                useRefs.firstH.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value < 0) {
-                alert('입력 값을 0 이상으로 작성해주세요');
+                useRefs.firstH.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace;
             } else if (value > 10000) {
-                alert('입력 값을  10001 미만으로 작성해주세요');
+                useRefs.firstH.current.focus();
+                return onSwitchStates.onSwitchFalseAndInsertSpace
+            }
+        }
+        if (eTName === 'secondH') {         //완료
+            let value = parseFloat(eTValue);
+            // state 가 false 가 되는 조건도 추가 해야함
+            if (!validInputRegex_2.test(eTValue)) {
+                useRefs.secondH.current.focus();
+                return onSwitchStates.onSwitchTrueAndInsertSpace;
+            } else if (value < 0) {
+                useRefs.secondH.current.focus();
+                return onSwitchStates.onSwitchTrueAndInsertSpace;
+            } else if (value > 10000) {
+                useRefs.secondH.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsertSpace
             }
         }
@@ -134,13 +165,13 @@ const DuctInput = () => {
             let value = parseFloat(eTValue);
             // state 가 false 가 되는 조건도 추가 해야함ㄹㄹ
             if (!validInputRegex_2.test(eTValue)) {
-                alerts.alertNum();
+                useRefs.secondW.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace
             } else if (value < 0) {
-                alert('입력 값을 0 이상으로 작성해주세요');
+                useRefs.secondW.current.focus();
                 return onSwitchStates.onSwitchTrueAndInsertSpace
             } else if (value > 10000000) {
-                alert('입력 값을  10000001 미만으로 작성해주세요');
+                useRefs.secondW.current.focus();
                 return onSwitchStates.onSwitchFalseAndInsertSpace
             }
         }
@@ -154,18 +185,25 @@ const DuctInput = () => {
                     break;
             }
         }
-
-        setState(prevState => {
-            const newState = {...prevState, ...defaultState};
-            duct_cal03(newState);
-            return newState;
-        });
-
         if (eTName === 'secondH' || eTName === 'secondD' || eTName === 'secondW') {
+
+
             let newState = duct_cal04(defaultState);
-            setState(newState);
+
+            return setState(newState);
         }
-        // 체크 박스 누르면 input 사용 불가 다시 한번더 누르면 사용 가능.
+
+        setState(defaultState);
+        setView({
+            windVolume: state.windVolume,
+            firstH: state.firstH,
+            ducts: state.ducts,
+            firstW: state.firstW,
+            firstD: state.firstD,
+            firstP: state.firstP,
+            firstV: state.firstV,
+        })
+
     }, [state]);
 
 
@@ -188,16 +226,21 @@ const DuctInput = () => {
                 value: !checked ? null : prevState.value
             }));
         }
-    }
 
+    }
     const onClickButton = () => {
         let newState = duct_cal03(state);
         setState(newState);
+        setView({
+            windVolume: newState.windVolume,
+            firstH: newState.firstH,
+            ducts: newState.ducts,
+            firstW: newState.firstW,
+            firstD: newState.firstD,
+            firstP: newState.firstP,
+            firstV: newState.firstV,
+        });
     };
-    useEffect(() => {
-        console.log(state);
-    }, [DuctInput]);// state가 변경될 때마다 useEffect가 실행
-
     return (
         <div className={"DuctInputClass"}>
             <div>
@@ -211,14 +254,15 @@ const DuctInput = () => {
                     {/*0미만 x 콤마(,) x*/}
                     {/*숫자 기입을 하지 않거나 혹은 숫자 이외 다른 문자를 넣으면 g1은 on*/}
                     <span>재료조도</span>
-                    <input className={"DuctInput"} value={state.materialRoughness} onChange={handleChange}
-                           name={"materialRoughness"} onKeyDown={handleChange}/>
+                    <input ref={useRefs.materialRoughness} className={"DuctInput"} value={state.materialRoughness}
+                           onChange={handleChange}
+                           name={"materialRoughness"} onKeyDown={handleChange} required/>
                 </div>
                 <div className="form-field">
                     {/*0미만 x 콤마(,) x 닷(.)*/}
                     <span>최소크기</span>
                     <input className={"DuctInput"} value={state.minSize} onChange={handleChange} name={"minSize"}
-                           onKeyDown={handleChange}/>
+                           onKeyDown={handleChange} ref={useRefs.minSize} required/>
                 </div>
                 <div className="form-field">
                     <p className="no-wrap">
@@ -245,7 +289,7 @@ const DuctInput = () => {
                     <span> 압력 (Pa / m) </span>
                     <input className={`checkBoxInputenter ${state.enterDisable ? 'enterDisabled' : ''}`}
                            value={state.enter} onChange={handleChange} disabled={state.enterDisable} name={"enter"}
-                           onKeyDown={handleChange}/>
+                           onKeyDown={handleChange} ref={useRefs.enter} required/>
                 </div>
                 <br/>
                 <div className="checkbox-wrapper">
@@ -257,7 +301,7 @@ const DuctInput = () => {
                     {/*g1 이 on 일 경우에는 자동으로 10 대입*/}
                     <input className={`checkBoxInputspeed ${state.speedDisable ? 'speedDisabled' : ''}`}
                            value={state.speed} onChange={handleChange} disabled={state.speedDisable} name={"speed"}
-                           onKeyDown={handleChange}/>
+                           onKeyDown={handleChange} ref={useRefs.speed} required/>
                     <br/>
                 </div>
                 <div className={"DuctInputSelectClass"}>
@@ -276,7 +320,7 @@ const DuctInput = () => {
                             {/*999999이상 0 미만이면 "" 빈문자열 */}
                             <span className="airspeed">풍량(CMH) </span>
                             <input name={"windVolume"} value={state.windVolume} onChange={handleChange}
-                                   onKeyDown={handleChange}/>
+                                   onKeyDown={handleChange} ref={useRefs.windVolume} required/>
                         </label>
                     </div>
                     <div>
@@ -285,7 +329,7 @@ const DuctInput = () => {
                         <span>H(mm)</span>
                         <input name={"firstH"} value={state.ducts === "원형덕트" ? " " : state.firstH}
                                onChange={handleChange} onKeyDown={handleChange}
-                               disabled={state.ducts === "원형덕트"}/>
+                               disabled={state.ducts === "원형덕트"} ref={useRefs.firstH} required/>
                         <span>{state.ducts === "원형덕트" ? "D(mm)" : "W(mm)"}</span>
                         <input readOnly value={state.ducts === "원형덕트" ? state.firstD : state.firstW}/>
                         <span>P(Pa/m)</span>
@@ -303,13 +347,13 @@ const DuctInput = () => {
                         <input name={"secondH"} value={state.ducts === "원형덕트" ? " " : state.secondH}
                                onChange={handleChange}
                                onKeyDown={handleChange}
-                               disabled={state.ducts === "원형덕트"}/>
+                               disabled={state.ducts === "원형덕트"} ref={useRefs.secondH} required/>
                         {/*g1 이 on 일 경우에는 자동으로  "" 빈문자열 대입*/}
                         {/*10000000이상 0 미만이면 "" 빈문자열 */}
                         <span>{state.ducts === "원형덕트" ? "D(mm)" : "W(mm)"}</span>
                         <input name={state.ducts === "원형덕트" ? "secondD" : "secondW"}
                                value={state.ducts === "원형덕트" ? state.secondD : state.secondW} onChange={handleChange}
-                               onKeyDown={handleChange}/>
+                               onKeyDown={handleChange} ref={useRefs.secondW} required/>
                         <span>P(Pa/m)</span>
                         <input className={"paInputBox"} readOnly value={state.secondP}/>
                         <span>V(m/s)</span>
@@ -323,7 +367,7 @@ const DuctInput = () => {
                 </div>
             </div>
             <div>
-                <DuctResultView data={state}/>
+                <DuctResultView data={view}/>
             </div>
         </div>
     )
