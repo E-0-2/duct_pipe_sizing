@@ -16,8 +16,8 @@ import DuctResultView from "./DuctResultView";
 //     }
 // };
 
-const DuctInput = () => {
 
+const DuctInput = () => {
 
     const data = useContext(ductStateContext);
     const [state, setState] = useState(data);
@@ -49,7 +49,6 @@ const DuctInput = () => {
         const validInputRegex = /^[.0-9]*$/;
         let validInputRegex_2 = /^[0-9]*$/;
         const defaultState = {...state, onSwitch: false, [eTName]: eTValue};
-        const ductCal04 = {onSwitch: false, [eTName]: eTValue};
         const onSwitchStates = {
             onSwitchTrueAndInsertSpace: setState({...state, onSwitch: true, [eTName]: ""}),
             onSwitchTrueAndInsert1: setState({...state, onSwitch: true, [eTName]: 1}),
@@ -65,14 +64,17 @@ const DuctInput = () => {
             if (!validInputRegex.test(eTValue) || isNaN(value)) {
                 if (e.target.value !== '') {
                     useRefs.materialRoughness.current.focus();
-                    return onSwitchStates.onSwitchTrueAndInsertSpace
+                    setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                    return;
                 }
             } else if (value < 0) {
                 useRefs.materialRoughness.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value >= 5) {
                 useRefs.materialRoughness.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
             }
         }
 
@@ -82,26 +84,33 @@ const DuctInput = () => {
 
             if (!validInputRegex_2.test(eTValue)) {
                 useRefs.minSize.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value < 0) {
                 useRefs.minSize.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value >= 100) {
                 useRefs.minSize.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace;
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
+
             }
         }
         if (eTName === 'enter') {            // 완료
             let value = parseFloat(eTValue);
             if (!validInputRegex.test(eTValue) || isNaN(value) && eTValue !== '') {
                 useRefs.enter.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsert1;
+                setState(onSwitchStates.onSwitchTrueAndInsert1);
+                return;
             } else if (value < 0) {
                 useRefs.enter.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsert1;
+                setState(onSwitchStates.onSwitchTrueAndInsert1);
+                return;
             } else if (value >= 10) {
                 useRefs.enter.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsert1;
+                setState(onSwitchStates.onSwitchFalseAndInsert1);
+                return;
             }
         }
         if (eTName === 'speed') {            // 완료
@@ -109,13 +118,16 @@ const DuctInput = () => {
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex.test(eTValue) || isNaN(value) && eTValue !== '') {
                 useRefs.speed.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsert10;
+                setState(onSwitchStates.onSwitchTrueAndInsert10);
+                return;
             } else if (value < 0) {
                 useRefs.speed.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsert10;
+                setState(onSwitchStates.onSwitchTrueAndInsert10);
+                return;
             } else if (value > 30) {
                 useRefs.speed.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsert1;
+                setState(onSwitchStates.onSwitchFalseAndInsert1);
+                return;
             }
         }
         if (eTName === 'windVolume') {            // 완료
@@ -123,27 +135,33 @@ const DuctInput = () => {
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex_2.test(eTValue)) {
                 useRefs.windVolume.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value < 0) {
                 useRefs.windVolume.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value > 999999) {
                 useRefs.windVolume.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace;
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
             }
         }
-        if (eTName === 'firstH' || eTName === 'secondH') {         //완료
+        if (eTName === 'firstH') {         //완료
             let value = parseFloat(eTValue);
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex_2.test(eTValue)) {
                 useRefs.firstH.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value < 0) {
                 useRefs.firstH.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value > 10000) {
                 useRefs.firstH.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
             }
         }
         if (eTName === 'secondH') {         //완료
@@ -151,13 +169,16 @@ const DuctInput = () => {
             // state 가 false 가 되는 조건도 추가 해야함
             if (!validInputRegex_2.test(eTValue)) {
                 useRefs.secondH.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value < 0) {
                 useRefs.secondH.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace;
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value > 10000) {
                 useRefs.secondH.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
             }
         }
 
@@ -166,13 +187,16 @@ const DuctInput = () => {
             // state 가 false 가 되는 조건도 추가 해야함ㄹㄹ
             if (!validInputRegex_2.test(eTValue)) {
                 useRefs.secondW.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value < 0) {
-                useRefs.secondW.current.focus();
-                return onSwitchStates.onSwitchTrueAndInsertSpace
+                useRefs.secondW.current.focus()
+                setState(onSwitchStates.onSwitchTrueAndInsertSpace);
+                return;
             } else if (value > 10000000) {
                 useRefs.secondW.current.focus();
-                return onSwitchStates.onSwitchFalseAndInsertSpace
+                setState(onSwitchStates.onSwitchFalseAndInsertSpace);
+                return;
             }
         }
         if (eTName === 'ducts') {
@@ -180,19 +204,23 @@ const DuctInput = () => {
                 case "사각덕트":
                 case "원형덕트":
                 case "오발덕트":
-                    return setState({...state, [eTName]: eTValue});
+                    setState({...state, [eTName]: eTValue});
+                    return;
                 default:
                     break;
             }
         }
+
+
         if (eTName === 'secondH' || eTName === 'secondD' || eTName === 'secondW') {
 
 
             let newState = duct_cal04(defaultState);
 
-            return setState(newState);
-        }
 
+            return setState(newState);
+
+        }
         setState(defaultState);
         setView({
             windVolume: state.windVolume,
@@ -202,10 +230,8 @@ const DuctInput = () => {
             firstD: state.firstD,
             firstP: state.firstP,
             firstV: state.firstV,
-        })
-
+        });
     }, [state]);
-
 
     const handleCheckboxChange = (e) => {
         const name = e.target.name; // Checkbox name
@@ -228,21 +254,24 @@ const DuctInput = () => {
         }
 
     }
-    const onClickButton = () => {
-        let newState = duct_cal03(state);
-        setState(newState);
-        setView({
-            windVolume: newState.windVolume,
-            firstH: newState.firstH,
-            ducts: newState.ducts,
-            firstW: newState.firstW,
-            firstD: newState.firstD,
-            firstP: newState.firstP,
-            firstV: newState.firstV,
-        });
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission
+            let newState = duct_cal03(state);
+            setState(newState);
+            setView({
+                windVolume: newState.windVolume,
+                firstH: newState.firstH,
+                ducts: newState.ducts,
+                firstW: newState.firstW,
+                firstD: newState.firstD,
+                firstP: newState.firstP,
+                firstV: newState.firstV,
+            });
+        }
     };
     return (
-        <div className={"DuctInputClass"}>
+        <div className={"DuctInputClass"} onKeyDown={handleKeyDown}>
             <div>
                 <DuctHead/>
             </div>
@@ -361,9 +390,6 @@ const DuctInput = () => {
                         <span>f</span>
                         <input readOnly value={state.secondF}/>
                     </div>
-                </div>
-                <div>
-                    <button onClick={onClickButton}>계산</button>
                 </div>
             </div>
             <div>

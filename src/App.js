@@ -23,7 +23,7 @@ const ductInitData = () => {
         enter: 1,
         speed: 10,
         ducts: "사각덕트",
-        windVolume: '',
+        windVolume: "",
         enterChecked: true,
         speedChecked: true,
         enterDisable: false,
@@ -54,7 +54,7 @@ function App() {
         const initData = ductInitData();
         console.log("Initial data:", initData);
         dispatch({type: "DuctInitData", data: initData});
-    }, [dispatch]);
+    }, []);
 
 
     const handleDuctClick = () => {

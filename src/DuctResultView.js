@@ -3,13 +3,23 @@ import React, {useEffect, useState} from 'react';
 const DuctResultView = ({data}) => {
     const [state, setState] = useState(data);
     const [result, setResult] = useState([]);
+    const [prevWindVolume, setPrevWindVolume] = useState(null);
+    const [prevFirstH, setPrevFirstH] = useState(null);
 
     useEffect(() => {
         setState(data);
     }, [data]);
 
     useEffect(() => {
-        setResult(prev => [...prev, state]);
+        if (prevWindVolume !== null && prevFirstH !== null) {
+            setResult(prev => [...prev, state]);
+        }
+        if (state.windVolume && prevWindVolume === null) {
+            setPrevWindVolume(state.windVolume);
+        }
+        if (state.firstH && prevFirstH === null) {
+            setPrevFirstH(state.firstH);
+        }
     }, [state]);
 
     useEffect(() => {

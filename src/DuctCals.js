@@ -2,19 +2,24 @@ import {err, err1} from "./Error";
 import {AH7GoalSeekAI7_2, AG7GoalSeekAI7_2, AJ7GoalSeekAL7_2, AM7GoalSeekAN7_2} from "./GoalSeek";
 
 export const duct_cal03 = (state) => {
-
     const x6 = 0.16;
     let a1, b, d, d0, d1, d2, e, f, k, p, p1, v, v1, h, w, q, re, r, r1, t, t1, icont, cwd, re2, r6, ah;
     let u7, v7, w7, ai7, ak7, al7, ao7, an7, ah7, am7, aj7;
     const WS = {};
     const duct = {};
 
-
+    if (!state.hasOwnProperty('enterChecked') || !state.hasOwnProperty('speedChecked') ||
+        !state.hasOwnProperty('windVolume') || !state.hasOwnProperty('minSize') ||
+        !state.hasOwnProperty('enter') || !state.hasOwnProperty('speed') ||
+        !state.hasOwnProperty('ducts') || !state.hasOwnProperty('firstH')) {
+        console.error('Missing necessary properties in the state object');
+        return;
+    }
     if ((state.enterChecked === false && state.speedChecked === false) || state.windVolume === "" || state.minSize === ""
         || (state.enterChecked && parseInt(state.enter) === 0) || (state.speedChecked && parseInt(state.speed) === 0)
         || (state.ducts !== "원형덕트" && parseInt(state.firstH) === 0)
     ) {
-        err1();
+        err1(state);
     }
     p1 = 0;
     r1 = 7;
@@ -44,7 +49,7 @@ export const duct_cal03 = (state) => {
         ai7 = AH7GoalSeekAI7_2(r6, u7, ai7, x6);
         d1 = ai7;
         if (d1 <= 0) {
-            err1();
+            err1(state);
         }
 
         v = 4 * (q / 3600) / (3.141592 * (d1 / 1000) ** 2);
@@ -59,7 +64,7 @@ export const duct_cal03 = (state) => {
 
             if (d1 <= 0) {
                 // eslint-disable-next-line no-undef
-                err1();
+                err1(state);
 
             }
             v = 4 * (q / 3600) / (3.141592 * Math.pow((d1 / 1000), 2));
@@ -128,7 +133,7 @@ export const duct_cal03 = (state) => {
             }
             if (d === 0) {
                 // eslint-disable-next-line no-undef
-                err1();
+                err1(state);
             }
             v = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
             re2 = v * d * 100 / 1.5;
@@ -172,7 +177,7 @@ export const duct_cal03 = (state) => {
                     secondD: Math.round(d),
                 }
             }
-            return updatedState;
+            return state ? updatedState : {};
         }
 
     }
@@ -227,7 +232,7 @@ export const duct_cal04 = (state) => {
 
     if (d === 0) {
         // eslint-disable-next-line no-undef
-        err();
+        err(state);
     }
 
     v = 4 * (q / 3600) / (Math.PI * Math.pow(d / 1000, 2));
