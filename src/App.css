@@ -1,0 +1,284 @@
+/* all area */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+* {
+    font-family: Arial, sans-serif;
+    color: #007b8a; /* dark cyan */
+}
+
+:root {
+    --primary-color: #007b8a; /* Please change it according to your theme */
+    --box-shadow-color: #007b8a60; /* Please change it according to your theme */
+    --background-color: #ffffff; /* Please change it according to your theme */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.appButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.appButton {
+    font-size: 2em;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 200px;
+}
+
+.appButton:hover {
+    background-color: #005b6a;
+}
+
+/* DuctHead style */
+.DuctHead div {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: var(--light-color);
+}
+
+.DuctHead .heading2 {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.2em;
+}
+
+.DuctHead .heading4, .DuctHead .heading6 {
+    font-family: Arial, sans-serif;
+    text-align: right;
+    padding: 15px;
+    margin: 0;
+    font-size: 1em;
+}
+
+.DuctHead .heading4 {
+    font-family: Arial, sans-serif;
+    color: var(--secondary-color);
+}
+
+.DuctHead .heading6 {
+    font-family: Arial, sans-serif;
+    color: var(--primary-color);
+}
+
+/*DuctInputClass style*/
+
+
+.DuctInputClass {
+
+    max-width: 800px;
+    border: 1px solid var(--primary-color);
+    margin: 0 auto;
+    padding: 80px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 30px var(--box-shadow-color);
+    background-color: var(--background-color);
+    justify-content: space-around;
+    transition: all 0.3s ease;
+}
+
+.DuctInputClass:hover {
+    box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.4);
+}
+
+
+.DuctInputClass .form-container {
+
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.DuctInputClass .form-field,
+.DuctInputClass .checkBoxing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 25%;
+    margin-top: 15px;
+}
+
+
+.DuctInputClass .no-wrap {
+    white-space: nowrap;
+}
+
+.DuctInputClass .heading3 {
+    text-align: left;
+    font-weight: bold;
+}
+
+.DuctInputClass .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+}
+
+.DuctInputClass .DuctInput, .DuctInputClass .checkBoxInputSpeed .checkBoxInputEnter .checkBoxSpeedInput {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.DuctInputClass .DuctInput:focus, .DuctInputClass .checkBoxInputSpeed:focus .checkBoxInputEnter:focus .checkBoxSpeedInput:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.DuctInputClass .checkBoxInputEnter {
+    background-color: lightcyan;
+    margin-left: 0;
+    width: 90px;
+}
+
+.DuctInputClass .checkBoxInputSpeed {
+    background-color: linen;
+    margin-left: 0;
+    width: 90px;
+}
+
+
+/*DuctInput disable effect true/false */
+
+.checkBoxInputEnter.EnterDisabled,
+.checkBoxInputSpeed.SpeedDisabled {
+    background-color: gray;
+}
+
+/*DuctInputSelectClass style */
+
+
+.DuctInputSelectClass .SelectPart {
+    padding: 80px;
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
+.DuctInputSelectClass .SelectPart span {
+    font-size: 1.1em;
+    margin-right: 10px;
+}
+
+.DuctInputSelectClass .SelectPart select,
+.DuctInputSelectClass .CMHInput input {
+    border: 1px solid #007b8a60;
+    border-radius: 10px;
+    font-size: 1em;
+    padding: 5px;
+    width: 200px;
+
+}
+
+/* DuctInputSelect styles */
+.DuctInputSelectClass {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.DuctInputSelectClass .SelectPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 400%;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.DuctInputSelectClass .SelectPart select {
+    width: 200px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.DuctInputSelectClass .SelectPart input, div input {
+    width: 100px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+.DuctInputSelectClass div:not(:first-child) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.DuctInputSelectClass .vInputBox {
+    background-color: linen;
+}
+
+.DuctInputSelectClass .paInputBox {
+    background-color: lightcyan;
+}
+
+/*DuctInputList style*/
+.DuctInputListClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+table.info {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #007b8a; /* 청록색으로 변경 */
+    font-weight: bold;
+    color: #fff; /* 흰색으로 변경 */
+}
+
+td {
+    background-color: #fff; /* 화이트색 유지 */
+    color: #007b8a; /* 청록색으로 변경 */
+}
+
+.DuctInputListClass p {
+    margin: 10px 0;
+}

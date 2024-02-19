@@ -1,7 +1,11 @@
-const Default  = () =>{
-    return(
+const Default = () => {
+    return (
         <div>
-            <h2>default</h2>
+            <h1 style={{
+                textAlign: "center",
+                marginTop: "300px",
+                fontSize: "7em"
+            }}>Default Page</h1>
         </div>
     )
 }

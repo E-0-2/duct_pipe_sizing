@@ -1,11 +1,9 @@
 import './App.css';
-import React, {useCallback, useEffect, useReducer, useState} from "react";
+import React, {useEffect, useReducer, useState} from "react";
 import DuctInput from "./DuctInput";
 import PipeMain from "./PipeMain";
 import Default from "./Default";
 import DuctResultView from "./DuctResultView";
-import DuctHead from "./DuctHead";
-
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -25,23 +23,23 @@ const ductInitData = () => {
         enter: 1,
         speed: 10,
         ducts: "사각덕트",
-        windVolume: '',
+        windVolume: "",
         enterChecked: true,
         speedChecked: true,
         enterDisable: false,
         speedDisable: false,
-        firstH: 0,
-        firstW: 0,
-        firstD: 0,
-        firstP: 0,
-        firstV: 0,
-        firstF: 0,
-        secondH: 0,
-        secondW: 0,
-        secondD: 0,
-        secondP: 0,
-        secondV: 0,
-        secondF: 0,
+        firstH: "",
+        firstW: "",
+        firstD: "",
+        firstP: "",
+        firstV: "",
+        firstF: "",
+        secondH: "",
+        secondW: "",
+        secondD: "",
+        secondP: "",
+        secondV: "",
+        secondF: "",
         onSwitch: false,
     };
 };
@@ -58,10 +56,6 @@ function App() {
         dispatch({type: "DuctInitData", data: initData});
     }, []);
 
-    const updateState = () => {
-        dispatch({type: 'UPDATE_STATE'});
-    };
-
 
     const handleDuctClick = () => {
         setPage(page === 'duct' ? 'default' : 'duct');
@@ -76,23 +70,17 @@ function App() {
         <ductStateContext.Provider value={data}>
             <div className="AppStyle">
                 <div className={`appButtons`}>
-                    <button className={`appButtonDuct`}
+                    <button className={`appButton`}
                             onClick={handleDuctClick}>DUCT
                     </button>
-                    <button className={`appButtonPipe`}
+                    <button className={`appButton`}
                             onClick={handlePipeClick}>PIPE
                     </button>
                 </div>
                 <div>
                     {page === 'duct' && (
                         <div>
-                            <div>
-                                <DuctHead/>
-                            </div>
                             <DuctInput/>
-                            <div>
-                                <DuctResultView/>
-                            </div>
                         </div>
                     )}
                     {page === 'pipe' && (
